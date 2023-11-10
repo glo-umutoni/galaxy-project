@@ -3,9 +3,13 @@
 ## contributors - Team Patapoufs&co
 
 Alexandra Ramassamy
+
 Helen Zhao
+
 Glorai Umutoni
+
 Karena Yan
+
 Katherine Hunter
 
 ## About
