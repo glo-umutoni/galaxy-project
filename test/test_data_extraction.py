@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import shutil
+import pytest
 from ..app.data_extraction import Data
 
 @pytest.fixture(autouse=True)
