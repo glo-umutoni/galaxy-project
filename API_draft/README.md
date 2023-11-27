@@ -13,7 +13,7 @@
     - Function concat: new_data:Data, axis:int → None
     - Function merge: new_data:Data, on_column:str →None
     - Attribute : data : ~pd.Dataframe() or equivalent
-    - Extract metadata functions: 
+    - Extract metadata functions (we are already using pandas dataframe so no need to do more ?): 
         - pandas like functions to extract data as regards identifiers, coordinates, chemical abundances, redshifts, or other fields requested by end-user 
 ## Module: preprocessing 
 - Class Preprocessing
