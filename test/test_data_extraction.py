@@ -13,6 +13,7 @@ def clean_up():
     shutil.rmtree("test_env")
 
 class TestData:
+    '''Test the Data class from the data_extraction module'''
 
     def test_init(self):
         data = Data()
