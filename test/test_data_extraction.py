@@ -31,15 +31,15 @@ class TestData:
         assert data.data.shape== (10, 18)
 
     def test_extract_from_constraints(self):
-        constrains = {"columns":["objid", "ra", "u"],
+        constrains = {"columns":["objid", "ra", "u", "g"],
                       "database" : ["PhotoObj"],
-                      "constrain" : [("u", [0, 19.6])]
+                      "constrain" : [("u", [0, 19.6]), ("g", [None, 20]), ("g", [0, None])]
                     }
 
         data = Data()
         data.extract_from_constraints(constrains)
         assert type(data.data)==pd.DataFrame
-        assert data.data.shape== (500000, 3)
+        assert data.data.shape== (500000, 4)
 
     def test_extract_from_file(self):
         file_name = "data/test_dataset.csv"
