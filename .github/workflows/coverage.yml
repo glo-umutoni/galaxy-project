@@ -7,3 +7,21 @@ on:
   pull_request:
     branches:    
       - main
+
+jobs:
+  run_tests:
+      name: Test Python implementation
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        # Setup Python environment in the container
+            # See: https://github.com/actions/setup-python
+        - uses: actions/setup-python@v3
+          with:
+            python-version: '3.10' # let's use a recent version 
+        - name: Install Python dependencies
+          run: |  # installing dependencies isn't actually required here. This is just a demonstration of how you would do it
+            python -m pip install --upgrade pip
+            pip install pytest
+        - name: Run tests
+          run: pytest --cov=app/ test/
