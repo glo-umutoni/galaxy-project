@@ -3,14 +3,17 @@ import pandas as pd
 import shutil
 import pytest
 import sys
-sys.path.append("../app")
+sys.path.append("app/")
 from data_extraction import Data
+
+test_dataset_path = "test/data/test_dataset.csv"
+test_sandbox_directory_path = "test/test_env"
 
 @pytest.fixture(autouse=True)
 def clean_up():
-    os.makedirs("test_env", exist_ok=True)
+    os.makedirs(test_sandbox_directory_path, exist_ok=True)
     yield
-    shutil.rmtree("test_env")
+    shutil.rmtree(test_sandbox_directory_path)
 
 class TestData:
     '''Test the Data class from the data_extraction module'''
@@ -43,22 +46,22 @@ class TestData:
         assert data.data.shape== (500000, 4)
 
     def test_extract_from_file(self):
-        file_name = "data/test_dataset.csv"
+        file_name = test_dataset_path 
         data = Data()
         data.extract_from_file(file_name)
         assert type(data.data)==pd.DataFrame
         assert data.data.shape== (10, 18)
 
     def test_write_file(self):
-        file_name = "data/test_dataset.csv"
-        output_file = "test_env/output.csv"
+        file_name = test_dataset_path 
+        output_file_path = os.path.join(test_sandbox_directory_path, "output.csv")
         data = Data()
         data.extract_from_file(file_name)
-        data.write_file(output_file)
-        assert os.path.isfile(output_file)
+        data.write_file(output_file_path)
+        assert os.path.isfile(output_file_path)
 
     def test_concat(self):
-        file_name = "data/test_dataset.csv"
+        file_name = test_dataset_path 
         data = Data()
         data.extract_from_file(file_name)
         data2 = Data()
@@ -68,7 +71,7 @@ class TestData:
         assert data.data.shape== (20, 18)
         
     def test_merge(self):
-        file_name = "data/test_dataset.csv"
+        file_name = test_dataset_path 
         data = Data()
         data.extract_from_file(file_name)
         data2 = Data()
