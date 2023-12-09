@@ -16,6 +16,9 @@ from preprocessing import Preprocessing
 
 query = "SELECT TOP 10 * FROM SpecObj"
 query_result = SDSS.query_sql(query)
+new_dtype = np.dtype([('flux', '<f4'), ('loglam', '<f4'), ('ivar', '<f4'),
+                            ('and_mask', '<i4'), ('or_mask', '<i4'),
+                            ('wdisp', '<f4'), ('sky', '<f4'), ('model', '<f4')])
 
 class TestNormalize:
     ''' Test the normalize function from the Preprocessing module'''
@@ -29,18 +32,19 @@ class TestNormalize:
     def test_normalize_return_value(self):
         '''Check that None is returned'''
         data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
-        assert Preprocessing.normalize(data) is None
+        data = pd.DataFrame(data.values, columns=data.columns, index=data.index)
+        assert isinstance(Preprocessing.normalize(data), pd.DataFrame)
 
     def test_normalize_correct_values(self):
         '''Compare module normalization and sklearn normalization values'''
         # normalize data with our module
         data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
-        Preprocessing.normalize(data)
+        new_data = Preprocessing.normalize(data)
         # normalize data with sklearn
         df = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         sk_preprocess_data = preprocessing.normalize(df, norm='l2')
         # check np docs for asserting equal 
-        assert np.testing.assert_array_equal(sk_preprocess_data.equals, data.data)
+        assert np.array_equal(sk_preprocess_data, new_data)
  
 
 class TestOutlierRemoval:
@@ -65,7 +69,7 @@ class TestOutlierRemoval:
         # remove outliers locally
         df = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         data_no_outliers = df[(np.abs(stats.zscore(df)) < 2).all(axis=1)]
-        assert data_no_outliers.equals(data.data)
+        assert data_no_outliers.equals(data)
 
 
 class TestInterpolate:
@@ -107,22 +111,30 @@ class TestCorrectRedshift:
 
     def test_correct_redshift_no_column(self):
         '''Check that exception is raised when "loglam" column DNE'''
-        data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
-        data = data.drop(columns = 'loglam')
+        # Assuming SDSS.get_spectra(matches=query_result)[0][1].data is your DataFrame
+        rec_array = SDSS.get_spectra(matches=query_result)[0][1].data
+        new_array = np.empty(rec_array.shape, dtype=new_dtype)
+
+        # Copy values from the original array to the new array
+        for field in rec_array.dtype.names:
+            new_array[field] = rec_array[field]
+
+        df= pd.DataFrame(new_array)
+        df = df.drop(columns='loglam')
         with pytest.raises(AttributeError):
-            Preprocessing.correct_redshift(redshift = 10, data=data)
+            Preprocessing.correct_redshift(redshift = 10, data=df)
 
     def test_correct_redshift_return_value(self):
         '''Check that None is returned'''
         data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
-        assert Preprocessing.correct_redshift(redshift = 10, data=data) is None
+        assert isinstance(Preprocessing.correct_redshift(redshift = 10, data=data), pd.DataFrame)
 
     def test_correct_redshift_correct_values(self):
         '''Check that the redshift is calculated correctly'''
         # correct redshift according to our module
         data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
-        Preprocessing.correct_redshift(redshift = 10, data=data)
+        new_data = Preprocessing.correct_redshift(redshift = 10, data=data)
         # correct redshift locally
         df = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         redshift_cor_data = df["loglam"] - np.log(1 + 10)
-        assert np.array_equal(data["corrected_loglam"], redshift_cor_data)
+        assert np.array_equal(new_data["corrected_loglam"], redshift_cor_data)
