@@ -144,3 +144,21 @@ class TestScore:
         assert isinstance(classifier.score(x,y), float)
         # should be a probability:
         assert 0 <= classifier.score(x,y) <= 1
+
+
+class TestConfusionMatrix:
+    '''Test confusion_matrix method of Classifier'''
+
+    def test_confusion_matrix_bad_inputs(self):
+        '''Bad inputs are properly handled'''
+        classifier = Classifier()
+        with pytest.raises(ValueError):
+            classifier.confusion_matrix([], [])
+
+    def test_confusion_matrix_return_values(self):
+        '''3x3 matrix returned'''
+        return_values = {"GALAXY", "QSO", "STAR"}
+        y_true = np.random.choice(return_values, 5)
+        y_pred = np.random.choice(return_values, 5)
+        classifier = Classifier()
+        assert classifier.confusion_matrix(y_true, y_pred).shape == (3,3)
