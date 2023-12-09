@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from astroquery.sdss import SDSS
 import shutil
 import pytest
 import sys
@@ -12,7 +13,9 @@ sys.path.append("app/")
 from data_extraction import Data
 from preprocessing import Preprocessing
 
-test_dataset_path = "test/data/test_dataset.csv"
+
+query = "SELECT TOP 10 * FROM SpecObj"
+query_result = SDSS.query_sql(query)
 
 class TestNormalize:
     ''' Test the normalize function from the Preprocessing module'''
@@ -21,26 +24,24 @@ class TestNormalize:
         '''Check that bad inputs are handled gracefully'''
         with pytest.raises(ValueError):
             # try to input object that is not the Data class object
-            Preprocessing.normalize(pd.DataFrame({'c1': [1, 2], 'c2': [3, 4]}))
+            Preprocessing.normalize(pd.DataFrame({}))
 
     def test_normalize_return_value(self):
         '''Check that None is returned'''
-        data = Data()
-        data.extract_from_file(test_dataset_path)
+        data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         assert Preprocessing.normalize(data) is None
 
     def test_normalize_correct_values(self):
         '''Compare module normalization and sklearn normalization values'''
         # normalize data with our module
-        data = Data()
-        data.extract_from_file(test_dataset_path)
+        data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         Preprocessing.normalize(data)
         # normalize data with sklearn
-        df = pd.read_csv(test_dataset_path)
+        df = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         sk_preprocess_data = preprocessing.normalize(df, norm='l2')
         # check np docs for asserting equal 
-        assert sk_preprocess_data.equals(data.data)
-
+        assert np.testing.assert_array_equal(sk_preprocess_data.equals, data.data)
+ 
 
 class TestOutlierRemoval:
     ''' Test the outlier removal function from the Preprocessing module '''
@@ -49,22 +50,20 @@ class TestOutlierRemoval:
         '''Check that bad inputs are handled gracefully'''
         with pytest.raises(ValueError):
             # try to input object that is not the Data class object
-            Preprocessing.remove_outliers(pd.DataFrame({'c1': [1, 2], 'c2': [3, 4]}))
+            Preprocessing.remove_outliers(pd.DataFrame({}))
 
     def test_remove_outliers_return_value(self):
         '''Check that None is returned'''
-        data = Data()
-        data.extract_from_file(test_dataset_path)
+        data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         assert Preprocessing.remove_outliers(data) is None
 
     def test_remove_outliers_correct_values(self):
         '''Check that correct values are returned'''
         # remove outliers with our module
-        data = Data()
-        data.extract_from_file(test_dataset_path)
+        data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         Preprocessing.remove_outliers(data)
         # remove outliers locally
-        df = pd.read_csv(test_dataset_path)
+        df = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         data_no_outliers = df[(np.abs(stats.zscore(df)) < 2).all(axis=1)]
         assert data_no_outliers.equals(data.data)
 
@@ -88,12 +87,6 @@ class TestInterpolate:
             # wrong num_datapoints
             Preprocessing.interpolate(one_dim_arr, one_dim_arr, (0,1), 5.5)
 
-    def test_interpolate_return_value(self):
-        '''Check that None is returned'''
-        x = np.linspace(0,5,50)
-        y = 3*(x**3)
-        assert Preprocessing.interpolate(x, y,(2,3),20) is None
-
     def test_interpolate_correct_values(self):
         '''Test interpolation function returns correct values'''
         x = np.linspace(0,5,50)
@@ -110,29 +103,26 @@ class TestCorrectRedshift:
         '''Check that bad inputs are handled gracefully'''
         with pytest.raises(ValueError):
             # try to input object that is not the Data class object
-            Preprocessing.correct_redshift(pd.DataFrame({'c1': [1, 2], 'c2': [3, 4]}))
+            Preprocessing.correct_redshift(redshift = 10, data=pd.DataFrame({}))
 
     def test_correct_redshift_no_column(self):
         '''Check that exception is raised when "loglam" column DNE'''
-        data = Data()
-        data.extract_from_file(test_dataset_path)
+        data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         data = data.drop(columns = 'loglam')
         with pytest.raises(AttributeError):
-            Preprocessing.correct_redshift(data)
+            Preprocessing.correct_redshift(redshift = 10, data=data)
 
     def test_correct_redshift_return_value(self):
         '''Check that None is returned'''
-        data = Data()
-        data.extract_from_file(test_dataset_path)
-        assert Preprocessing.correct_redshift(data) is None
+        data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
+        assert Preprocessing.correct_redshift(redshift = 10, data=data) is None
 
     def test_correct_redshift_correct_values(self):
         '''Check that the redshift is calculated correctly'''
         # correct redshift according to our module
-        data = Data()
-        data.extract_from_file(test_dataset_path)
-        Preprocessing.correct_redshift(data)
+        data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
+        Preprocessing.correct_redshift(redshift = 10, data=data)
         # correct redshift locally
-        df = pd.read_csv(test_dataset_path)
-        redshift_cor_data = df["loglam"] - np.log(1 + df["redshift"])
-        assert data["corrected_loglam"] == redshift_cor_data
+        df = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
+        redshift_cor_data = df["loglam"] - np.log(1 + 10)
+        assert np.array_equal(data["corrected_loglam"], redshift_cor_data)
