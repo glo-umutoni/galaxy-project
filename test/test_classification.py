@@ -3,27 +3,28 @@ import pandas as pd
 import pytest
 import numpy as np
 import sys
-from astroquery.sdss import SDSS
 sys.path.append("app/")
-from data_extraction import Data
 from classification import Classifier
 
-# do we need a test of init too?
+class TestInit:
+    '''Test init method in Classifier'''
 
-query = "SELECT TOP 10 * FROM SpecObj"
-query_result = SDSS.query_sql(query)
+    def test_init_bad_inputs(self):
+        '''Bad inputs are properly handled'''
+        with pytest.raises(AssertionError):
+            Classifier("RandomModel")
 
 class TestFit:
     '''Test fit method of Classifier'''
 
     def test_fit_bad_inputs(self):
         '''Bad inputs are properly handled'''
-        return_values = {"GALAXY", "QSO", "STAR"}
-        classifier = Classifier()
+        return_values = ["GALAXY", "QSO", "STAR"]
+        classifier = Classifier("KNeighborsClassifier")
         x_1d = np.random.rand(3)
         x_2d = np.random.rand(3,2)
-        y_correct = np.random.choice(return_values, 3)
-        y_large = np.random.choice(return_values, 4)
+        y_correct = return_values
+        y_large = return_values + ['STAR']
         y_wrong = np.random.rand(3)
         with pytest.raises(ValueError):
             classifier.fit([],[])
@@ -36,10 +37,9 @@ class TestFit:
 
     def test_fit_return_none(self):
         '''Tests that fit method returns None'''
-        data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
-        classifier = Classifier()
-        x = data.drop(columns='class')
-        y = data['class']
+        x = np.random.rand(3,2)
+        y = ["GALAXY", "QSO", "STAR"]
+        classifier = Classifier("KNeighborsClassifier")
         assert classifier.fit(x,y) is None
 
 
@@ -48,10 +48,10 @@ class TestPredict:
 
     def test_predict_bad_inputs(self):
         '''Bad inputs are properly handled'''
-        return_values = {"GALAXY", "QSO", "STAR"}
-        classifier = Classifier()
+        return_values = ["GALAXY", "QSO", "STAR"]
+        classifier = Classifier("LogisticRegression")
         x = np.random.rand(3,2)
-        y = np.random.choice(return_values, 3)
+        y = ["GALAXY", "QSO", "STAR"]
         classifier.fit(x,y)
         x_new = np.random.rand(3,3)
         with pytest.raises(ValueError):
@@ -62,25 +62,24 @@ class TestPredict:
 
     def test_predict_return_values(self):
         '''1d array of correct length is returned'''
-        data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
-        classifier = Classifier()
-        x = data.drop(columns='class')
-        y = data['class']
+        return_values = ["GALAXY", "QSO", "STAR"]
+        x = np.random.rand(3,2)
+        y = ["GALAXY", "QSO", "STAR"] #np.random.choice(return_values, 3)
+        x_new = np.random.rand(4,2)
+        classifier = Classifier("RandomForestClassifier")
         classifier.fit(x,y)
-        assert classifier.predict(x).shape == (x.shape[0],)
+        assert classifier.predict(x_new).shape == (x_new.shape[0],)
 
     def test_predict_correct_values(self):
         '''Tests that the correct predictions are returned'''
-        return_values = {"GALAXY", "QSO", "STAR"}
-        data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
-        classifier = Classifier()
-        x = data.drop(columns='class')
-        y = data['class']
-        # create and fit classifier
-        classifier = Classifier()
+        return_values = ["GALAXY", "QSO", "STAR"]
+        x = np.random.rand(3,2)
+        y = ["GALAXY", "QSO", "STAR"] #np.random.choice(return_values, 3)
+        x_new = np.random.rand(4,2)
+        classifier = Classifier("LogisticRegression")
         classifier.fit(x,y)
         # check that predictions are one of "GALAXY", "QSO", "STAR"
-        assert set(classifier.predict(x)).issubset(return_values)
+        assert set(classifier.predict(x_new)).issubset(return_values)
 
 
 class TestPredictProba:
@@ -88,10 +87,10 @@ class TestPredictProba:
 
     def test_predict_proba_bad_inputs(self):
         '''Bad inputs are properly handled'''
-        return_values = {"GALAXY", "QSO", "STAR"}
-        classifier = Classifier()
+        return_values = ["GALAXY", "QSO", "STAR"]
+        classifier = Classifier("LogisticRegression")
         x = np.random.rand(3,2)
-        y = np.random.choice(return_values, 3)
+        y = ["GALAXY", "QSO", "STAR"] #np.random.choice(return_values, 3)
         classifier.fit(x,y)
         x_new = np.random.rand(3,3)
         with pytest.raises(ValueError):
@@ -102,15 +101,16 @@ class TestPredictProba:
 
     def test_predict_proba_return_values(self):
         '''2d array is returned with 3 columns'''
-        data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
-        classifier = Classifier()
-        x = data.drop(columns='class')
-        y = data['class']
+        classifier = Classifier("LogisticRegression")
+        return_values = ["GALAXY", "QSO", "STAR"]
+        x = np.random.rand(3,2)
+        y = ["GALAXY", "QSO", "STAR"] #np.random.choice(return_values, 3)
+        x_new = np.random.rand(4,2)
         classifier.fit(x,y)
         # returned array has correct shape
-        assert classifier.predict_proba(x).shape == (x.shape[0],3)
+        assert classifier.predict_proba(x_new).shape == (x_new.shape[0],3)
         # probabilities sum to 1 across rows
-        assert np.all(classifier.predict_proba(x).sum(axis=1),np.ones(x.shape[0]),atol=0.01)
+        assert np.all(np.allclose(classifier.predict_proba(x_new).sum(axis=1),np.ones(x_new.shape[0]),atol=0.01))
 
 
 class TestScore:
@@ -118,10 +118,10 @@ class TestScore:
 
     def test_score_bad_inputs(self):
         '''Bad inputs are properly handled'''
-        return_values = {"GALAXY", "QSO", "STAR"}
-        classifier = Classifier()
+        return_values = ["GALAXY", "QSO", "STAR"]
+        classifier = Classifier("LogisticRegression")
         x = np.random.rand(3,2)
-        y = np.random.choice(return_values, 3)
+        y = ["GALAXY", "QSO", "STAR"] #np.random.choice(return_values, 3)
         classifier.fit(x,y)
         x_new = np.random.rand(4,2)
         y_new = np.random.choice(return_values, 3)
@@ -135,10 +135,10 @@ class TestScore:
 
     def test_score_return_value(self):
         '''Proper score is returned'''
-        data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
-        classifier = Classifier()
-        x = data.drop(columns='class')
-        y = data['class']
+        return_values = ["GALAXY", "QSO", "STAR"]
+        x = np.random.rand(3,2)
+        y = ["GALAXY", "QSO", "STAR"] #np.random.choice(return_values, 3)
+        classifier = Classifier("LogisticRegression")
         classifier.fit(x,y)
         # should return a float:
         assert isinstance(classifier.score(x,y), float)
@@ -151,14 +151,14 @@ class TestConfusionMatrix:
 
     def test_confusion_matrix_bad_inputs(self):
         '''Bad inputs are properly handled'''
-        classifier = Classifier()
+        classifier = Classifier("LogisticRegression")
         with pytest.raises(ValueError):
-            classifier.confusion_matrix([], [])
+            classifier.confusion_matrix(np.random.rand(3), np.random.rand(4))
 
     def test_confusion_matrix_return_values(self):
         '''3x3 matrix returned'''
-        return_values = {"GALAXY", "QSO", "STAR"}
+        return_values = ["GALAXY", "QSO", "STAR"]
         y_true = np.random.choice(return_values, 5)
         y_pred = np.random.choice(return_values, 5)
-        classifier = Classifier()
+        classifier = Classifier("LogisticRegression")
         assert classifier.confusion_matrix(y_true, y_pred).shape == (3,3)
