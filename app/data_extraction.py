@@ -1,5 +1,5 @@
 '''Module used to extract and/or combine astronomical data from Sloan Digital Sky Survey.'''
-
+from astropy.table import Table
 from astroquery.sdss import SDSS
 import pandas as pd
 
@@ -8,6 +8,7 @@ class Data:
 
     def __init__(self):
         self.data = pd.DataFrame()
+        self.spectrum = []
     
     def extract_from_query(self, query:str):
         '''
@@ -71,13 +72,19 @@ class Data:
         query = f"SELECT {', '.join(constraints['columns'])} FROM {', '.join(constraints['database'])} " + query_constrain
         print(query)
         query_result = SDSS.query_sql(query)
+
         self.data = query_result.to_pandas()
-        
 
     def extract_from_file(self, path:str):
         '''Reads and stores data from csv file in 'data' attribute. Assumes header.'''
 
         self.data = pd.read_csv(path, skiprows=1)
+
+
+
+    def get_spectra(self):
+        query_result=Table.from_pandas(self.data)
+        self.spectrum=SDSS.get_spectra(matches=query_result)
 
     def write_file(self, path:str):
         '''Writes contents of 'data' attribute to csv file.'''
