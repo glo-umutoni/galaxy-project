@@ -1,5 +1,6 @@
 import numpy as np
 import sys
+import pandas as pd
 sys.path.append("app/")
 from data_extraction import Data
 from preprocessing import Preprocessing
@@ -11,7 +12,8 @@ class TestIntegrationNormalize:
         data = Data()
         data.extract_from_query(query)
         data.get_spectra()
-        std_data = Preprocessing.normalize(data.spectrum[0][1].data)
+        df = pd.DataFrame(data.spectrum[0][1].data)
+        std_data = Preprocessing.normalize(df)
         assert np.testing.assert_array_almost_equal(np.mean(std_data, axis=1), np.zeros(np.mean(std_data, axis=1).shape), decimal=6)
         assert np.testing.assert_array_almost_equal(np.std(std_data, axis=1), np.ones(np.mean(std_data, axis=1).shape), decimal=6)
 
@@ -22,7 +24,8 @@ class TestIntegrationRemoveOutliers:
         data = Data()
         data.extract_from_query(query)
         data.get_spectra()
-        clean_data = Preprocessing.remove_outliers(data.spectrum[0][1].data)
+        df = pd.DataFrame(data.spectrum[0][1].data)
+        clean_data = Preprocessing.remove_outliers(df)
         assert clean_data.shape[1]==data.spectrum[0][1].data.shape[1]
         assert clean_data.shape[0]<=data.spectrum[0][1].data.shape[0]
 
@@ -32,5 +35,6 @@ class TestIntegrationCorrectRedshift:
         data = Data()
         data.extract_from_query(query)
         data.get_spectra()
-        clean_data = Preprocessing.correct_redshift(data.spectrum[0][1].data, redshift=10)
+        df = pd.DataFrame(data.spectrum[0][1].data)
+        clean_data = Preprocessing.correct_redshift(df, redshift=10)
         assert "corrected_loglam" in clean_data
