@@ -58,18 +58,31 @@ class TestOutlierRemoval:
 
     def test_remove_outliers_return_value(self):
         '''Check that None is returned'''
-        data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
-        assert Preprocessing.remove_outliers(data) is None
+        rec_array = SDSS.get_spectra(matches=query_result)[0][1].data
+        new_array = np.empty(rec_array.shape, dtype=new_dtype)
+
+        # Copy values from the original array to the new array
+        for field in rec_array.dtype.names:
+            new_array[field] = rec_array[field]
+
+        data = pd.DataFrame(new_array)
+        assert isinstance(Preprocessing.remove_outliers(data), pd.DataFrame)
 
     def test_remove_outliers_correct_values(self):
         '''Check that correct values are returned'''
         # remove outliers with our module
-        data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
-        Preprocessing.remove_outliers(data)
+        rec_array = SDSS.get_spectra(matches=query_result)[0][1].data
+        new_array = np.empty(rec_array.shape, dtype=new_dtype)
+
+        # Copy values from the original array to the new array
+        for field in rec_array.dtype.names:
+            new_array[field] = rec_array[field]
+
+        df = pd.DataFrame(new_array)
+        new_df = Preprocessing.remove_outliers(df)
         # remove outliers locally
-        df = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         data_no_outliers = df[(np.abs(stats.zscore(df)) < 2).all(axis=1)]
-        assert data_no_outliers.equals(data)
+        assert data_no_outliers.equals(new_df)
 
 
 class TestInterpolate:
