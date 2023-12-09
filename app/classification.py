@@ -10,7 +10,7 @@ import pandas as pd
 class Classifier:
     '''Classification estimator adapted from sklearn model'''
 
-    def __init__(self, model_name, params={}):
+    def __init__(self, model_name, kwargs={}):
         '''Initialize estimator object from sklearn
 
         Parameters
@@ -20,14 +20,14 @@ class Classifier:
             Must be one of 'KNeighborsClassifier', 'LogisticRegression',
             and 'RandomForestClassifier'.
 
-        params : dict
+        kwargs : dict
             Parameters for specified classifier.  
 
         Example
         ----------
         If the base estimator desired is KNeighborsClassifier(n_neighbors=5),
         then use:
-        >>> Classifier(model_name='KNeighborsClassifier', params={"n_neighbors":5})
+        >>> Classifier(model_name='KNeighborsClassifier', kwargs={"n_neighbors":5})
         '''
         models = {
             "KNeighborsClassifier":KNeighborsClassifier,
@@ -35,7 +35,7 @@ class Classifier:
             "RandomForestClassifier":RandomForestClassifier
         }
         assert model_name in models.keys(), "Must be one of 'KNeighborsClassifier','LogisticRegression','RandomForestClassifier'"
-        self.model = models[model_name](**params)
+        self.model = models[model_name](**kwargs)
 
     def fit(self, x, y):
         '''Fit classifier.
