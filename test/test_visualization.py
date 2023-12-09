@@ -36,5 +36,8 @@ class TestVisualization:
         # check that plot function with correct input runs
         output = Visualization.plot(data)
 
+        # check that custom keyword arguments work
+        Visualization.plot(data, window_size=11, order=2)
+
         # check that function returns a matplotlib figure
         assert isinstance(output, matplotlib.figure.Figure)
