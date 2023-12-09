@@ -29,6 +29,11 @@ class Visualization:
         order : int, optional
             order of the polynomial used to fit the spectral data when denoising. Default is 3.
 
+        Returns
+        ------
+        fig : matplotlib.figure.Figure
+            plot of spectral data
+
         Raises
         ------
         TypeError
