@@ -28,12 +28,18 @@ class TestVisualization:
         '''Test initialization'''
         vis = Visualization()
 
-    def test_plot(self):
-        '''Test plot function'''
-        # check that incorrect input raises exception
+    def test_plot_bad_input(self):
+        '''Test plot function when inputs are invalid'''
+        # check that incorrect input type raises exception
         with pytest.raises(TypeError): 
             Visualization.plot([])
 
+        # check that correct input type with missing columns raises exception
+        with pytest.raises(ValueError):
+            Visualization.plot(pd.DataFrame())
+
+    def test_plot(self):
+        '''Test plot function when input is valid'''
         # check that plot function with correct input creates figure that can be saved
         output = Visualization.plot(data)
         output_fig_path = os.path.join(test_sandbox_directory_path, "output.png")
