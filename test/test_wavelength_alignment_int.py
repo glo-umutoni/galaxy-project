@@ -15,10 +15,7 @@ class TestIntegrationWavelengthAlignment:
         min_val= 3.7
         max_val= 3.8
         num_points = 5000
-        wv= WavelengthAlignment()
-        wv.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
-        aligned_y = wv.interpolated_y
-        aligned_x = wv.interpolated_x
+        aligned_y, aligned_x = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
         assert len(object_ids) == len(aligned_y)
         assert num_points == len(aligned_x)
         assert min(aligned_x) >= min_val
