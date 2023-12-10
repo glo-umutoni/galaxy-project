@@ -1,36 +1,39 @@
 '''Module used to extract and/or combine astronomical data from Sloan Digital Sky Survey.'''
-
-from astroquery.sdss import SDSS
-import warnings
-import pandas as pd
-import numpy as np
-from scipy.interpolate import interp1d
-warnings.filterwarnings("ignore", category=RuntimeWarning)
-warnings.filterwarnings("ignore", category=np.VisibleDeprecationWarning)
-
+import sys
+sys.path.append("/app/")
+from preprocessing import Preprocessing
 
 class WavelengthAlignment:
-    '''Retrieves and stores SDSS data within class.'''
+    '''Retrieves and aligns wavelengths for specified objects
+    Parameters
+    ----------
+    object_ids: a list of object id integers to align
+    min_val: lower range boung=d of the log wavelength
+    max_val: upper range bound of the log wavelength
+    num_points: number of interpolated points to return
 
-    def __init__(self):
-        self.interpolated_x = None
-        self.interpolated_y = []
+    Returns:
+    --------
+     aligned_x: array of linearly spaced log wavelengths
+     aligned_y: list of arrays of interpolated flux based on the user selected range and number of points
+    Raises:
+    -------
+    '''
 
-    def interpolate(self, object_id, min_val, max_val, num_points:int):
-        object_id_str = str(object_id)
-        query = rf"SELECT * FROM SpecObj where specObjID in ({object_id_str})"
-        query_result = SDSS.query_sql(query)
-        spectra = SDSS.get_spectra(matches=query_result)
-        spectra_data = pd.DataFrame(spectra[0][1].data)
-        loglam = np.array(spectra_data['loglam'], dtype=float)
-        flux = np.array(spectra_data['flux'], dtype=float)
-        interp_function = interp1d(x=loglam, y=flux, kind='linear', fill_value='extrapolate')
-        linear_wavelengths = np.linspace(min_val, max_val, num_points)
-        interpolated_flux = interp_function(linear_wavelengths)
-        return linear_wavelengths, interpolated_flux
+    @staticmethod
+    def align(object_ids: list, min_val: (int,float), max_val: (int,float), num_points:int):
+        if type(num_points) != int:
+            raise ValueError("Number of points to interpolate needs to be an integer")
+        if type(object_ids) != list:
+            raise ValueError("Object ids to interpolate must be a list")
+        if min_val == 0:
+            raise ValueError("Range lower bound cannot be empty")
+        if max_val == 0:
+            raise ValueError("Range upper bound cannot be empty")
 
-    def align(self, object_ids: list, min_val, max_val, num_points:int):
-        for object in object_ids:
-            inter_x, inter_y = self.interpolate(object_id=object, min_val=min_val, max_val=max_val, num_points=num_points)
-            self.interpolated_x = inter_x
-            self.interpolated_y.append(inter_y)
+        aligned_y=[]
+        for object in (object_ids):
+            x, y = Preprocessing.interpolate(object_id=object, min_val=min_val, max_val=max_val, num_points=num_points)
+            aligned_x= x
+            aligned_y.append(y)
+        return aligned_x,aligned_y
