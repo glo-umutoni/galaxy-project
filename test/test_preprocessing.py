@@ -109,8 +109,9 @@ class TestInterpolate:
         x = np.linspace(0,5,50)
         x_new = np.linspace(2,3,20)
         y = 3*(x**3)
-        interp_fn = interp1d(x,y,kind='linear')
-        assert np.array_equal(interp_fn(x_new),Preprocessing.interpolate(x,y,(2,3),20))
+        interp_fn = interp1d(x,y,kind='linear', fill_value='extrapolate')
+        assert np.array_equal(interp_fn(x_new),Preprocessing.interpolate(x,y,(2,3),20)[1])
+        assert np.array_equal(x_new,Preprocessing.interpolate(x,y,(2,3),20)[0])
 
 
 class TestCorrectRedshift:
