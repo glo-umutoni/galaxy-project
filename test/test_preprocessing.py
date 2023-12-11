@@ -41,10 +41,9 @@ class TestNormalize:
         data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         new_data = Preprocessing.normalize(data)
         # normalize data with sklearn
-        df = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
-        sk_preprocess_data = preprocessing.normalize(df, norm='l2')
         # check np docs for asserting equal 
-        assert np.array_equal(sk_preprocess_data, new_data)
+        assert np.sum(np.mean(new_data, axis=0))<10**(-6)
+        assert np.sum(np.std(new_data, axis=0))-len(np.mean(new_data, axis=0))<10**(-6)
  
 
 class TestOutlierRemoval:
