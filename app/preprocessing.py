@@ -2,6 +2,7 @@ import pandas as pd
 from typing import Tuple
 from data_extraction import Data
 from sklearn import preprocessing
+from scipy.interpolate import interp1d
 import pandas as pd
 import numpy as np
 from scipy import stats
@@ -21,13 +22,45 @@ class Preprocessing:
         return data[(np.abs(stats.zscore(data)) < 2).all(axis=1)]
 
     @staticmethod
-    def interpolate(x:list, y:list, Range:Tuple[float, float], bin:int):
-        if len(x) == 0: raise ValueError("x is empty, please pass in a non empty list.")
-        if len(y) == 0: raise ValueError("y is empty, please pass in a non empty list.")
-        if not isinstance(Range, Tuple): raise ValueError("Range needs to be a Tuple")
-        if len(Range) != 2: raise ValueError("Range needs to have 2 values (min, max).")
-        if bin <= 0: raise ValueError("bin needs to be a value greater than 0.")
-        pass 
+    def interpolate(x:list, y:list, x_lim:Tuple[float, float], bins:int):
+        ''' Interpolates wavelengths for a specified object id
+        Parameters
+        --------
+        x: a 1-d array
+        y: a 1-d array
+        x_lim: a tuple (x_min, x_max) to interpolate between
+        bins: Number of points to interpolate
+
+        Returns
+        -------
+        x: linearly spaced log wavelengths
+        y: interpolated flux based on the user selected range and number of points
+
+        Raises
+        -------
+        ValueError
+            Raised if more than one object id is entered
+            Raised if the bin value is not an integer
+            Raised if min or max values are empty
+        '''
+
+        if type(bins) != int:
+            raise ValueError("Number of points to interpolate needs to be an integer")
+        if x_lim[0] > x_lim[1]:
+            raise ValueError("x_lin not valid")
+        if len(x_lim)!=2:
+            raise ValueError("x_lim should be a tuple with 2 elements")
+        if len(np.array(x).shape)!=1 and np.array(x).shape[1]!=1:
+            raise ValueError("x should be a 1D array")
+        if len(np.array(y).shape)!=1 and np.array(y).shape[1]!=1:
+            raise ValueError("y should be a 1D array")
+        # Convert object id into a sql query and query Specobj table for the relevant  spectra columns
+        # Interpolate using SciPy's interp1d
+        interp_function = interp1d(x=x, y=y, kind='linear', fill_value='extrapolate')
+        # Linearly spaced wavelengths and interpolate
+        x_1 = np.linspace(x_lim[0], x_lim[1], bins)
+        y_1 = interp_function(x_1)
+        return x_1, y_1
 
 
     @staticmethod
