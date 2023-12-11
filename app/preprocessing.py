@@ -1,7 +1,7 @@
 import pandas as pd
 from typing import Tuple
 from data_extraction import Data
-from sklearn import preprocessing
+from sklearn.preprocessing import StandardScaler
 from scipy.interpolate import interp1d
 import pandas as pd
 import numpy as np
@@ -11,9 +11,12 @@ class Preprocessing:
 
     @staticmethod
     def normalize(data:pd.DataFrame): 
-        if not isinstance(data, pd.DataFrame): raise ValueError("data is not a pd.DataFrame")
-        if data.empty: raise ValueError("data is empty, make sure you extract data first.")
-        data = pd.DataFrame(preprocessing.normalize(data, norm='l2'))
+        if not isinstance(data, pd.DataFrame): 
+            raise ValueError("data is not a pd.DataFrame")
+        if data.empty: 
+            raise ValueError("data is empty, make sure you extract data first.")
+        scaler = StandardScaler()
+        data = pd.DataFrame(scaler.fit_transform(data), columns = data.columns)
         return data
 
     @staticmethod
@@ -74,4 +77,3 @@ class Preprocessing:
         wavelengths = data["loglam"]
         data["corrected_loglam"] = wavelengths - np.log(1 + redshift)
         return data
-
