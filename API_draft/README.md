@@ -14,8 +14,8 @@
     - Function concat: new_data:Data, axis:int → None
     - Function merge: new_data:Data, on_column:str →None
     - Attribute : data : ~pd.Dataframe() or equivalent
-    - Extract metadata functions (we are already using pandas dataframe so no need to do more ?): 
-        - pandas like functions to extract data as regards identifiers, coordinates, chemical abundances, redshifts, or other fields requested by end-user 
+    - Attribute : spectrum : list
+
 ## Module: preprocessing 
 - Class Preprocessing
     - Function (static) normalize : data → pd.DataFrame
@@ -25,17 +25,16 @@
 
 ## Module: wavelength_alignment
 - Class WavelengthAlignment
-    - Function: align : data → None
-    - Function: interpolate: data → None
+    - Function: align : object_ids: list, min_val: (int,float), max_val: (int,float), num_points:int → array-like, array-like
 
 ## Module: visualization
 - Class Visualization
-    - Function (static) plot : data -> plt.figure
+    - Function (static) plot : spectra : pd.DataFrame -> plt.figure
     visualize spectra with an overlay of the inferred continuum
 
 ## Module: interactive_visualization
 - Class InteractiveVisualization
-    - Function (static) plot_interactive : data -> None
+    - Function (static) plot_interactive : spectra : pd.DataFrame -> plt.figure
     enable users to select plot regions and quantify the flux of spectral lines in an interactive mode
 
 ## Module: data_augmentation
