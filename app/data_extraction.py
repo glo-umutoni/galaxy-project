@@ -80,11 +80,53 @@ class Data:
 
         self.data = pd.read_csv(path, skiprows=1)
 
+    @staticmethod
+    def get_spectra_from_obj_id(obj_id:str):
+        '''
+        Queries data from SDSS with user-given constraints.  
+        Stores pandas DataFrame in 'data' attribute.
 
+        Parameters
+        ----------
+        obj_id = a string corresponding to an object ID
 
-    def get_spectra(self):
-        query_result=Table.from_pandas(self.data)
-        self.spectrum=SDSS.get_spectra(matches=query_result)
+        Returns
+        -------
+
+        return the spectrum linked to the obj_id
+
+        Raises
+        ------
+        ValueError
+            Raised if obj_id is not a string
+        '''
+        if type(obj_id)!=str:
+            raise ValueError("obj_id should be a string")
+        query = rf"SELECT * FROM SpecObj where specObjID in ({obj_id})"
+        query_result = SDSS.query_sql(query)
+        return SDSS.get_spectra(matches=query_result)
+    
+    def get_spectra_from_data(self):
+        '''
+        Queries data from SDSS with user-given constraints.  
+        Stores pandas DataFrame in 'data' attribute.
+
+        Returns
+        -------
+
+        return the spectrum linked to the Data.data elements ids
+
+        Raises
+        ------
+        ValueError
+            Raised if Data.data is None
+        '''
+        if self.data is None or "specObjID" not in self.data:
+            raise ValueError("self.data should contain \"specObjID\" ")
+        obj_ids= tuple(self.data["specObjID"].apply(lambda x : str(x)))
+        query=rf"SELECT TOP 10 * FROM SpecObj where specObjID in {obj_ids}"
+        query_result = SDSS.query_sql(query)
+        return SDSS.get_spectra(matches=query_result)
 
     def write_file(self, path:str):
         '''Writes contents of 'data' attribute to csv file.'''
