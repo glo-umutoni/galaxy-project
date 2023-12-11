@@ -18,13 +18,18 @@ class TestWavelengthAlignment:
         with pytest.raises(ValueError):
             # incorrect entries for object ids
             WavelengthAlignment.align(object_ids=incorrect_object_ids, min_val=3.5, max_val=3.7, num_points=500)
+        
+        with pytest.raises(ValueError):
             # incorrect minimum value
             WavelengthAlignment.align(object_ids=[299489677444933632, 299489677444933632], min_val=incorrect_min_val
                                       ,max_val=3.7, num_points=500)
 
+        with pytest.raises(ValueError):
             # incorrect maximum value
             WavelengthAlignment.align(object_ids=[299489677444933632, 299489677444933632], min_val=3.5
                                       , max_val=incorrect_max_val, num_points=500)
+        
+        with pytest.raises(ValueError):
             # incorrect object ids
             WavelengthAlignment.align(object_ids=[299489677444933632, 299489677444933632], min_val=3.5
                                       , max_val=3.7, num_points=incorrect_pts)
