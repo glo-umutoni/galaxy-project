@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 import shutil
+import numpy as np
+from astroquery.sdss import SDSS
 import pytest
 import sys
 sys.path.append("app/")
@@ -51,6 +53,24 @@ class TestData:
         data.extract_from_file(file_name)
         assert type(data.data)==pd.DataFrame
         assert data.data.shape== (10, 18)
+    
+    def test_get_spectra_from_obj_id(self):
+        query="SELECT TOP 10 * FROM SpecObj"
+        query_result = SDSS.query_sql(query)
+        df = query_result.to_pandas()
+        obj_id= str(df["specObjID"][0])
+        spectra = SDSS.get_spectra(matches=query_result)
+        spectra1 = Data.get_spectra_from_obj_id(obj_id=obj_id)
+        assert np.array_equal(spectra[0][1].data, spectra1[0][1].data)
+
+    def test_get_spectra_from_data(self):
+        query="SELECT TOP 10 * FROM SpecObj"
+        data = Data()
+        data.extract_from_query(query)
+        spectra1 = data.get_spectra_from_data()
+        query_result = SDSS.query_sql(query)
+        spectra = SDSS.get_spectra(matches=query_result)
+        assert np.array_equal(spectra[0][1].data, spectra1[0][1].data)
 
     def test_write_file(self):
         file_name = test_dataset_path 
