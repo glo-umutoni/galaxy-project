@@ -8,7 +8,8 @@ from data_extraction import Data
 from preprocessing import Preprocessing
 from classification import Classifier
 from wavelength_alignment import WavelengthAlignment
-query="SELECT TOP 10 SpecObjID, ra,dec,z, run2d, class FROM SpecObj"
+from sklearn.preprocessing import MultiLabelBinarizer
+query="SELECT TOP 20 SpecObjID, ra,dec,z, run2d, class FROM SpecObj"
 
 class TestIntegrationClassifier:
     '''
@@ -36,12 +37,12 @@ class TestIntegrationClassifier:
         std_metadata = Preprocessing.normalize(data=metadata)
 
         # combine metadata and spectra
-        X = pd.concat([std_metadata, std_spectra],axis=1)
-        y = data.data['class']
+        X = pd.concat([std_metadata, std_spectra],axis=1).to_numpy()
+        y = data.data['class'].apply(lambda x : str(x))
     
         # perform object prediction
         classifier = Classifier('LogisticRegression')
-        classifier.fit(X.to_numpy(),y)
+        classifier.fit(X,y)
         y_pred = classifier.predict(X)
         assert y_pred.shape == y.shape
         assert classifier.predict_proba(X).shape == (len(y),3)
