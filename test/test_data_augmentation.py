@@ -17,6 +17,9 @@ class TestDataAugmentor:
         with pytest.raises(ValueError):
             DataAugmentor.compute_derivative([[10]], [None])
 
+        with pytest.raises(ValueError):
+            DataAugmentor.compute_derivative([10], [2])
+
     def test_compute_derivative_return_value(self):
         '''Check that a 2-D array is returned'''
         augmented_data = DataAugmentor.compute_derivative([[10, 20]], [2])
