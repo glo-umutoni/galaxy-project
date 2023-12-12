@@ -46,8 +46,10 @@ class TestIntegrationVisualization:
 
         # test plotting multiple aligned spectra
         fig, ax = plt.subplots()
-        Visualization.plot(df_aligned, ax=ax, y_column="flux_0")
-        Visualization.plot(df_aligned, ax=ax, y_column="flux_1")
+        fig = Visualization.plot(df_aligned, ax=ax, y_column="flux_0")
+        fig = Visualization.plot(df_aligned, ax=ax, y_column="flux_1")
+        # check that return value is of correct type
+        assert isinstance(fig, matplotlib.figure.Figure)
 
     def test_plot_processed(self):
         '''Test plotting spectral data after alignment and preprocessing.'''
@@ -58,5 +60,7 @@ class TestIntegrationVisualization:
 
         # test plotting multiple aligned and preprocessed spectra
         fig, ax = plt.subplots()
-        Visualization.plot(df_processed, ax=ax, y_column="flux_0")
-        Visualization.plot(df_processed, ax=ax, y_column="flux_1")
+        fig = Visualization.plot(df_processed, ax=ax, y_column="flux_0")
+        fig = Visualization.plot(df_processed, ax=ax, y_column="flux_1")
+        # check that return value is of correct type
+        assert isinstance(fig, matplotlib.figure.Figure)
