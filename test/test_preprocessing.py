@@ -26,17 +26,16 @@ class TestNormalize:
     def test_normalize_handle_bad_inputs(self):
         '''Check that bad inputs are handled gracefully'''
         with pytest.raises(ValueError):
-            # try to input object that is not the Data class object
             Preprocessing.normalize(pd.DataFrame({}))
 
     def test_normalize_return_value(self):
-        '''Check that None is returned'''
+        '''Check that a pd.DataFrame is returned'''
         data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         data = pd.DataFrame(data.values, columns=data.columns, index=data.index)
         assert isinstance(Preprocessing.normalize(data), pd.DataFrame)
 
     def test_normalize_correct_values(self):
-        '''Compare module normalization and sklearn normalization values'''
+        ''' Check that normalize function actually returns a normalized array'''
         # normalize data with our module
         data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         new_data = Preprocessing.normalize(data)
@@ -52,11 +51,10 @@ class TestOutlierRemoval:
     def test_remove_outliers_handle_bad_inputs(self):
         '''Check that bad inputs are handled gracefully'''
         with pytest.raises(ValueError):
-            # try to input object that is not the Data class object
             Preprocessing.remove_outliers(pd.DataFrame({}))
 
     def test_remove_outliers_return_value(self):
-        '''Check that None is returned'''
+        '''Check that a pd.DataFrame is returned'''
         rec_array = SDSS.get_spectra(matches=query_result)[0][1].data
         new_array = np.empty(rec_array.shape, dtype=new_dtype)
 
@@ -119,7 +117,6 @@ class TestCorrectRedshift:
     def test_correct_redshift_handle_bad_inputs(self):
         '''Check that bad inputs are handled gracefully'''
         with pytest.raises(ValueError):
-            # try to input object that is not the Data class object
             Preprocessing.correct_redshift(redshift = 10, data=pd.DataFrame({}))
 
     def test_correct_redshift_no_column(self):
@@ -138,7 +135,7 @@ class TestCorrectRedshift:
             Preprocessing.correct_redshift(redshift = 10, data=df)
 
     def test_correct_redshift_return_value(self):
-        '''Check that None is returned'''
+        '''Check that a pd.DataFrame is returned'''
         data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         assert isinstance(Preprocessing.correct_redshift(redshift = 10, data=data), pd.DataFrame)
 
