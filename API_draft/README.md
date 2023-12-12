@@ -30,7 +30,7 @@
 
 ## Module: visualization
 - Class Visualization
-    - Function (static) plot : spectra:pd.DataFrame -> plt.figure
+    - Function (static) plot : data, y_column:str, order:int=2, figax:Tuple[matplotlib.figure.Figure ,matplotlib.axes.Axes] =None, **kwargs -> matplotlib.figure.Figure
     visualize spectra with an overlay of the inferred continuum
 
 ## Module: interactive_visualization
