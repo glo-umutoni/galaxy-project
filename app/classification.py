@@ -38,7 +38,7 @@ class Classifier:
         if model_name not in {key for key in Classifier.MODELS}:
             raise ValueError("Must be one of 'KNeighborsClassifier','LogisticRegression','RandomForestClassifier'")
         
-        self.model = Classifier.Models[model_name](**kwargs)
+        self.model = Classifier.MODELS[model_name](**kwargs)
 
     def fit(self, x, y):
         '''Fit classifier.
