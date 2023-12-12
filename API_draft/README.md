@@ -9,8 +9,8 @@
     - Function extract_from_query : query:str → None
     - Function extract_from_constraints : constraints:dict-like → None
     - Function extract_from_file : data:str → None
-    - Function get_spectra_from_obj_id : object_id:str → list
-    - Function get_spectra_from_data : None → list
+    - Function get_spectra_from_obj_id : object_id:str → list (corresponds to output of SDSS.get_spectra())
+    - Function get_spectra_from_data : None → list (corresponds to output of SDSS.get_spectra())
     - Function write_file : path:str → None
     - Function concat: new_data:Data, axis:int → None
     - Function merge: new_data:Data, on_column:str →None
