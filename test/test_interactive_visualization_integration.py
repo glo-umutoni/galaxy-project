@@ -27,7 +27,7 @@ def perform_alignment(object_ids):
 
 class TestIntegrationInteractiveVisualization:
     def test_plot_raw(self, monkeypatch):
-        '''Test plotting spectral data directly from the Data class, without preprocessing.'''
+        '''Test interactive plotting of spectral data directly from the Data class, without preprocessing.'''
         monkeypatch.setattr(plt, 'show', lambda: None)
         data = Data()
         data.extract_from_query(query)
@@ -39,7 +39,7 @@ class TestIntegrationInteractiveVisualization:
         assert output is None
     
     def test_plot_aligned(self, monkeypatch):
-        '''Test plotting spectral data after wavelength alignment.'''
+        '''Test interactive plotting of spectral data after wavelength alignment.'''
         monkeypatch.setattr(plt, 'show', lambda: None)
         data = Data()
         data.extract_from_query(query)
@@ -57,7 +57,7 @@ class TestIntegrationInteractiveVisualization:
         assert output2 is None
 
     def test_plot_processed(self, monkeypatch):
-        '''Test plotting spectral data after alignment and preprocessing.'''
+        '''Test interactive plotting of spectral data after alignment and preprocessing.'''
         monkeypatch.setattr(plt, 'show', lambda: None)
         data = Data()
         data.extract_from_query(query)
