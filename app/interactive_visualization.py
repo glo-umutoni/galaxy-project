@@ -81,6 +81,7 @@ class InteractiveVisualization:
         # first create base plot without interactivity
         fig = Visualization.plot(data, y_column, order, (fig,ax), **kwargs)
         
+        # get inferred continuum
         wavelengths = 10**data["loglam"] # undo log
         flux = data[y_column]
         # if no window size is specified, use the size of data
@@ -88,7 +89,6 @@ class InteractiveVisualization:
             window_size = len(flux)
         else:
             window_size = kwargs["window_size" ]
-        # get inferred continuum
         denoised_flux = savgol_filter(flux, window_size, polyorder=order)
 
         # text indicating total flux; initially N/A until user selects region
@@ -125,9 +125,3 @@ class InteractiveVisualization:
         legend.set_loc("upper right")
 
         plt.show()
-
-#if __name__=="__main__":
-#    query = "SELECT TOP 10 * FROM SpecObj"
-#    query_result = SDSS.query_sql(query)
-#    data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
-#    InteractiveVisualization.plot(data, y_column="flux")
