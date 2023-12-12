@@ -10,7 +10,7 @@ import pandas as pd
 class Classifier:
     '''Classification estimator adapted from sklearn model'''
 
-    Models = {
+    MODELS = {
             "KNeighborsClassifier":KNeighborsClassifier,
             "LogisticRegression":LogisticRegression,
             "RandomForestClassifier":RandomForestClassifier
@@ -35,10 +35,10 @@ class Classifier:
         >>> Classifier(model_name='KNeighborsClassifier', n_neighbors=5)
         '''
         
-        if model_name not in {key for key in Models}:
+        if model_name not in {key for key in Classifier.MODELS}:
             raise ValueError("Must be one of 'KNeighborsClassifier','LogisticRegression','RandomForestClassifier'")
         
-        self.model = Models[model_name](**kwargs)
+        self.model = Classifier.Models[model_name](**kwargs)
 
     def fit(self, x, y):
         '''Fit classifier.
