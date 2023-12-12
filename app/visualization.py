@@ -11,7 +11,7 @@ class Visualization:
     '''Provides visualization functionality given spectra data.'''
 
     @staticmethod
-    def plot(data, y_column:str, order:int=2, figax:Tuple[matplotlib.figure.Figure ,matplotlib.axes.Axes] =None, **kwargs) -> matplotlib.figure.Figure:
+    def plot(data, y_column:str, order:int=3, figax:Tuple[matplotlib.figure.Figure ,matplotlib.axes.Axes] =None, **kwargs) -> matplotlib.figure.Figure:
         '''
         Plots spectra data with overlay of inferred continuuum
 
@@ -44,10 +44,10 @@ class Visualization:
         Raises
         ------
         TypeError
-            Raised if spectra is not a pandas DataFrame object
+            Raised if data is not a pandas DataFrame object
             Raised if y_column is not a string
         ValueError
-            Raised if spectra does not contain the necessary columns
+            Raised if data does not contain the necessary columns
         '''
         if not isinstance(data, pd.DataFrame):
             raise TypeError("Spectra input must be a pandas DataFrame.")
