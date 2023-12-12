@@ -21,7 +21,8 @@ class TestDataAugmentor:
         '''Check that a 2-D array is returned'''
         augmented_data = DataAugmentor.compute_derivative([[10, 20]], [2])
         assert augmented_data.shape[0] == 1
-        assert augmented_data.shape[1] == 2
+        assert augmented_data.shape[1] == 1
+        assert augmented_data.shape[2] == 2
 
     def test_compute_derivative_correct_values(self):
         '''Check that correct values are returned'''
