@@ -17,7 +17,7 @@ new_dtype = np.dtype([('flux', '<f4'), ('loglam', '<f4'), ('ivar', '<f4'),
                             ('wdisp', '<f4'), ('sky', '<f4'), ('model', '<f4')])
 
 class TestIntegrationDataAugmentation:
-    def test_augment_data_derivative_aligned_spectra(self):
+    def test_augment_data_derivative_aligned_spectra_multiple(self):
         '''Compute derivatives of aligned spectra for multiple stars'''
 
         # extract data from data_extraction
@@ -37,7 +37,7 @@ class TestIntegrationDataAugmentation:
 
         assert aligned_y.shape == aligned_deriv.shape
 
-    def test_augment_data_derivative_unaligned_spectra(self):
+    def test_augment_data_derivative_unaligned_spectra_one(self):
         '''Compute derivative of unaligned spectra for one star'''
 
         # extract data from data_extraction
@@ -59,7 +59,7 @@ class TestIntegrationDataAugmentation:
         assert unaligned_spectra.shape == unaligned_deriv.shape
 
 
-    def test_augment_data_frac_derivative_aligned_spectra(self):
+    def test_augment_data_frac_derivative_aligned_spectra_multiple(self):
         '''Compute derivatives of aligned spectra for multiple stars'''
 
         # extract data from data_extraction
@@ -75,11 +75,11 @@ class TestIntegrationDataAugmentation:
         aligned_x, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
         
         # compute derivative of aligned data
-        aligned_deriv = DataAugmentor.compute_frac_derivative(aligned_y, order=[0.7])
+        aligned_deriv = DataAugmentor.compute_derivative(aligned_y, order=[0.7])
 
         assert aligned_y.shape == aligned_deriv.shape
 
-    def test_augment_data_frac_derivative_unaligned_spectra(self):
+    def test_augment_data_frac_derivative_unaligned_spectra_one(self):
         '''Compute fractional derivative of unaligned spectra for one star'''
 
         # extract data from data_extraction
@@ -96,6 +96,28 @@ class TestIntegrationDataAugmentation:
         unaligned_spectra = Preprocessing.correct_redshift(redshift = data.data['redshift'][0],data = unaligned_spectra)
         unaligned_spectra_std = Preprocessing.normalize(unaligned_spectra)
 
-        unaligned_deriv = DataAugmentor.compute_frac_derivative(unaligned_spectra_std, order=[0.7])
+        unaligned_deriv = DataAugmentor.compute_derivative(unaligned_spectra_std, order=[0.7])
 
         assert unaligned_spectra.shape == unaligned_deriv.shape
+
+    def test_augment_data_derivative_aligned_spectra_one(self):
+        '''Compute derivatives of aligned spectra for multiple stars'''
+        min_val = 3.2
+        max_val = 3.7
+        num_points = 500
+        object_ids = [299489677444933632]
+        _, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
+
+        aug_data = DataAugmentor.compute_derivative(data=np.array(aligned_y), derivative_order= [0.5,1])
+        assert aug_data.shape == (2, 4, 500)
+
+    def test_augment_data_derivative_aligned_spectra_multiple(self):
+        '''Compute derivatives of aligned spectra for multiple stars'''
+        min_val = 3.2
+        max_val = 3.7
+        num_points = 500
+        object_ids = [299489677444933632, 299489677444933632, 299490502078654464, 299490227200747520]
+        _, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
+
+        aug_data = DataAugmentor.compute_derivative(data=np.ndarray(aligned_y), derivative_order= [0.5,1])
+        assert aug_data.shape == (2, 4, 500)
