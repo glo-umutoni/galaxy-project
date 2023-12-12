@@ -95,7 +95,7 @@ class TestIntegrationDataAugmentation:
         # preprocess unaligned spectra
         unaligned_spectra = Preprocessing.correct_redshift(redshift = data.data['redshift'][0],data = unaligned_spectra)
         unaligned_spectra_std = Preprocessing.normalize(unaligned_spectra).to_numpy()
-        obj_flux = np.ndarray(unaligned_spectra_std["flux"].array)[np.newaxis: ]
+        obj_flux = np.ndarray(unaligned_spectra_std["flux"].array)[np.newaxis:]
         unaligned_deriv = DataAugmentor.compute_derivative(obj_flux, order=[0.7])
 
         assert unaligned_deriv.shape == (1, 1, len(unaligned_spectra_std["flux"]))
