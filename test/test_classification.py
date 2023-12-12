@@ -1,4 +1,3 @@
-import os
 import pandas as pd
 import pytest
 import numpy as np
@@ -11,7 +10,7 @@ class TestInit:
 
     def test_init_bad_inputs(self):
         '''Bad inputs are properly handled'''
-        with pytest.raises(AssertionError):
+        with pytest.raises(ValueError):
             Classifier("RandomModel")
 
 class TestFit:
@@ -28,10 +27,13 @@ class TestFit:
         y_wrong = np.random.rand(3)
         with pytest.raises(ValueError):
             classifier.fit([],[])
+        with pytest.raises(ValueError):
             # x should be a 2d array
             classifier.fit(x_1d, y_correct)
+        with pytest.raises(ValueError):
             # x.shape[0] and len(y) should be the same
             classifier.fit(x_2d, y_large)
+        with pytest.raises(ValueError):
             # y should contain "GALAXY", "QSO", "STAR"
             classifier.fit(x_2d, y_wrong)
 
@@ -48,7 +50,6 @@ class TestPredict:
 
     def test_predict_bad_inputs(self):
         '''Bad inputs are properly handled'''
-        return_values = ["GALAXY", "QSO", "STAR"]
         classifier = Classifier("LogisticRegression")
         x = np.random.rand(3,2)
         y = ["GALAXY", "QSO", "STAR"]
@@ -56,15 +57,15 @@ class TestPredict:
         x_new = np.random.rand(3,3)
         with pytest.raises(ValueError):
             # x_new does not match column dims of fitted x
-            classifier.predict(x_new)
+            y_pred = classifier.predict(x_new)
+        with pytest.raises(ValueError):
             # empty list input to predict
-            classifier.predict([])
+            y_pred = classifier.predict([])
 
     def test_predict_return_values(self):
         '''1d array of correct length is returned'''
-        return_values = ["GALAXY", "QSO", "STAR"]
         x = np.random.rand(3,2)
-        y = ["GALAXY", "QSO", "STAR"] #np.random.choice(return_values, 3)
+        y = ["GALAXY", "QSO", "STAR"] 
         x_new = np.random.rand(4,2)
         classifier = Classifier("RandomForestClassifier")
         classifier.fit(x,y)
@@ -72,14 +73,13 @@ class TestPredict:
 
     def test_predict_correct_values(self):
         '''Tests that the correct predictions are returned'''
-        return_values = ["GALAXY", "QSO", "STAR"]
         x = np.random.rand(3,2)
-        y = ["GALAXY", "QSO", "STAR"] #np.random.choice(return_values, 3)
+        y = ["GALAXY", "QSO", "STAR"] 
         x_new = np.random.rand(4,2)
         classifier = Classifier("LogisticRegression")
         classifier.fit(x,y)
         # check that predictions are one of "GALAXY", "QSO", "STAR"
-        assert set(classifier.predict(x_new)).issubset(return_values)
+        assert set(classifier.predict(x_new)).issubset(y)
 
 
 class TestPredictProba:
@@ -87,24 +87,23 @@ class TestPredictProba:
 
     def test_predict_proba_bad_inputs(self):
         '''Bad inputs are properly handled'''
-        return_values = ["GALAXY", "QSO", "STAR"]
         classifier = Classifier("LogisticRegression")
         x = np.random.rand(3,2)
-        y = ["GALAXY", "QSO", "STAR"] #np.random.choice(return_values, 3)
+        y = ["GALAXY", "QSO", "STAR"] 
         classifier.fit(x,y)
         x_new = np.random.rand(3,3)
         with pytest.raises(ValueError):
             # x_new does not match column dims of fitted x
             classifier.predict_proba(x_new)
+        with pytest.raises(ValueError):
             # empty list input to predict
             classifier.predict_proba([])
 
     def test_predict_proba_return_values(self):
         '''2d array is returned with 3 columns'''
         classifier = Classifier("LogisticRegression")
-        return_values = ["GALAXY", "QSO", "STAR"]
         x = np.random.rand(3,2)
-        y = ["GALAXY", "QSO", "STAR"] #np.random.choice(return_values, 3)
+        y = ["GALAXY", "QSO", "STAR"] 
         x_new = np.random.rand(4,2)
         classifier.fit(x,y)
         # returned array has correct shape
@@ -121,28 +120,29 @@ class TestScore:
         return_values = ["GALAXY", "QSO", "STAR"]
         classifier = Classifier("LogisticRegression")
         x = np.random.rand(3,2)
-        y = ["GALAXY", "QSO", "STAR"] #np.random.choice(return_values, 3)
+        y = ["GALAXY", "QSO", "STAR"] 
         classifier.fit(x,y)
         x_new = np.random.rand(4,2)
         y_new = np.random.choice(return_values, 3)
         with pytest.raises(ValueError):
             # x_new and y have different lengths
             classifier.score(x_new, y)
+        with pytest.raises(ValueError):
             # empty lists input to score
             classifier.score([],[])
+        with pytest.raises(ValueError):
             # wrong dims
             classifier.score(y, y_new)
 
     def test_score_return_value(self):
         '''Proper score is returned'''
-        return_values = ["GALAXY", "QSO", "STAR"]
         x = np.random.rand(3,2)
-        y = ["GALAXY", "QSO", "STAR"] #np.random.choice(return_values, 3)
+        y = ["GALAXY", "QSO", "STAR"]
         classifier = Classifier("LogisticRegression")
         classifier.fit(x,y)
         # should return a float:
         assert isinstance(classifier.score(x,y), float)
-        # should be a probability:
+        # should be accuracy (btw 0 and 1):
         assert 0 <= classifier.score(x,y) <= 1
 
 
@@ -162,3 +162,4 @@ class TestConfusionMatrix:
         y_pred = np.random.choice(return_values, 5)
         classifier = Classifier("LogisticRegression")
         assert classifier.confusion_matrix(y_true, y_pred).shape == (3,3)
+    

@@ -10,7 +10,13 @@ import pandas as pd
 class Classifier:
     '''Classification estimator adapted from sklearn model'''
 
-    def __init__(self, model_name, kwargs={}):
+    Models = {
+            "KNeighborsClassifier":KNeighborsClassifier,
+            "LogisticRegression":LogisticRegression,
+            "RandomForestClassifier":RandomForestClassifier
+        }
+
+    def __init__(self, model_name, **kwargs):
         '''Initialize estimator object from sklearn
 
         Parameters
@@ -20,22 +26,19 @@ class Classifier:
             Must be one of 'KNeighborsClassifier', 'LogisticRegression',
             and 'RandomForestClassifier'.
 
-        kwargs : dict
-            Parameters for specified classifier.  
+        **kwargs : Parameters for specified classifier.  
 
         Example
         ----------
         If the base estimator desired is KNeighborsClassifier(n_neighbors=5),
         then use:
-        >>> Classifier(model_name='KNeighborsClassifier', kwargs={"n_neighbors":5})
+        >>> Classifier(model_name='KNeighborsClassifier', n_neighbors=5)
         '''
-        models = {
-            "KNeighborsClassifier":KNeighborsClassifier,
-            "LogisticRegression":LogisticRegression,
-            "RandomForestClassifier":RandomForestClassifier
-        }
-        assert model_name in models.keys(), "Must be one of 'KNeighborsClassifier','LogisticRegression','RandomForestClassifier'"
-        self.model = models[model_name](**kwargs)
+        
+        if model_name not in {key for key in Models}:
+            raise ValueError("Must be one of 'KNeighborsClassifier','LogisticRegression','RandomForestClassifier'")
+        
+        self.model = Models[model_name](**kwargs)
 
     def fit(self, x, y):
         '''Fit classifier.
