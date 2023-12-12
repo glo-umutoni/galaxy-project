@@ -126,7 +126,8 @@ class Data:
         obj_ids= tuple(self.data["specObjID"].apply(lambda x : str(x)))
         query=rf"SELECT TOP 10 * FROM SpecObj where specObjID in {obj_ids}"
         query_result = SDSS.query_sql(query)
-        return SDSS.get_spectra(matches=query_result)
+        self.spectrum= SDSS.get_spectra(matches=query_result)
+        return self.spectrum
 
     def write_file(self, path:str):
         '''Writes contents of 'data' attribute to csv file.'''
