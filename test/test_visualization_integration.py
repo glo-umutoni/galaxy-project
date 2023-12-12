@@ -40,26 +40,26 @@ class TestIntegrationVisualization:
     def test_plot_aligned(self):
         '''Test plotting spectral data after wavelength alignment.'''
         data = Data()
-        metadata = data.extract_from_query(query)
+        data.extract_from_query(query)
 
         # perform wavelength alignment
-        object_ids= list(metadata["specObjID"][0:5])
+        object_ids= list(data.data["specObjID"][0:5])
         df_aligned = perform_alignment(object_ids=object_ids)
 
         # test plotting multiple aligned spectra
         fig, axs = plt.subplots(ncols=2)
-        fig = Visualization.plot(df_aligned, ax=axs[0], y_column="flux_0")
-        fig = Visualization.plot(df_aligned, ax=axs[1], y_column="flux_1")
+        fig = Visualization.plot(df_aligned, figax=(fig, axs[0]), y_column="flux_0")
+        fig = Visualization.plot(df_aligned, figax=(fig, axs[1]), y_column="flux_1")
         # check that return value is of correct type
         assert isinstance(fig, matplotlib.figure.Figure)
 
     def test_plot_processed(self):
         '''Test plotting spectral data after alignment and preprocessing.'''
         data = Data()
-        metadata = data.extract_from_query(query)
+        data.extract_from_query(query)
 
         # perform wavelength alignment
-        object_ids= list(metadata["specObjID"][0:5])
+        object_ids= list(data.data["specObjID"][0:5])
         df_aligned = perform_alignment(object_ids=object_ids)
 
         # perform preprocessing functions on spectral data
@@ -69,7 +69,7 @@ class TestIntegrationVisualization:
 
         # test plotting multiple aligned and preprocessed spectra
         fig, axs = plt.subplots(ncols=2)
-        fig = Visualization.plot(df_processed, ax=axs[0], y_column="flux_0")
-        fig = Visualization.plot(df_processed, ax=axs[1], y_column="flux_1")
+        fig = Visualization.plot(df_processed, figax=(fig, axs[0]), y_column="flux_0")
+        fig = Visualization.plot(df_processed, figax=(fig, axs[1]), y_column="flux_1")
         # check that return value is of correct type
         assert isinstance(fig, matplotlib.figure.Figure)
