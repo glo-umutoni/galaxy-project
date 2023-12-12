@@ -39,8 +39,7 @@ class TestNormalize:
         # normalize data with our module
         data = pd.DataFrame(SDSS.get_spectra(matches=query_result)[0][1].data)
         new_data = Preprocessing.normalize(data)
-        # normalize data with sklearn
-        # check np docs for asserting equal 
+
         assert np.sum(np.mean(new_data, axis=0))<10**(-6)
         assert np.sum(np.std(new_data, axis=0))-len(np.mean(new_data, axis=0))<10**(-6)
  
