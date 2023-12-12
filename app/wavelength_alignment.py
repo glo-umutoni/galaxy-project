@@ -11,14 +11,15 @@ class WavelengthAlignment:
     Parameters
     ----------
     object_ids: a list of object id integers to align
-    min_val: lower range boung=d of the log wavelength
+    min_val: lower range bound of the log wavelength
     max_val: upper range bound of the log wavelength
     num_points: number of interpolated points to return
 
     Returns:
     --------
      aligned_x: array of linearly spaced log wavelengths
-     aligned_y: list of arrays of interpolated flux based on the user selected range and number of points
+     aligned_y: list of arrays of interpolated flux based on the user selected range and number of points (shape object_ids x num_points)
+
     Raises:
     -------
     '''

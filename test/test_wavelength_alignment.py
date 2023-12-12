@@ -46,5 +46,5 @@ class TestWavelengthAlignment:
         assert type(aligned_y) == list
         assert len(aligned_x) == num_points
         assert len(aligned_y) == len(object_ids)
-        assert min(aligned_x) >= min_val
-        assert max(aligned_x) <= max_val
+        assert min(aligned_x) == min_val
+        assert max(aligned_x) == max_val
