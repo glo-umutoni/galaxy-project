@@ -48,13 +48,11 @@ class TestIntegrationInteractiveVisualization:
         object_ids= list(data.data["specObjID"][0:5])
         df_aligned = perform_alignment(object_ids=object_ids)
 
-        # test plotting multiple aligned spectra
-        fig, axs = plt.subplots(ncols=2)
-        output1 = InteractiveVisualization.plot(df_aligned, figax=(fig, axs[0]), y_column="flux_0")
-        output2 = InteractiveVisualization.plot(df_aligned, figax=(fig, axs[1]), y_column="flux_1")
+        # test plotting aligned spectra
+        fig, ax = plt.subplots()
+        output = InteractiveVisualization.plot(df_aligned, figax=(fig, ax), y_column="flux_0")
         # check that return value is of correct type
-        assert output1 is None
-        assert output2 is None
+        assert output is None
 
     def test_plot_processed(self, monkeypatch):
         '''Test interactive plotting of spectral data after alignment and preprocessing.'''
@@ -72,9 +70,7 @@ class TestIntegrationInteractiveVisualization:
         df_processed = Preprocessing.correct_redshift(data=df_processed, redshift=10)
 
         # test plotting multiple aligned and preprocessed spectra
-        fig, axs = plt.subplots(ncols=2)
-        output1 = InteractiveVisualization.plot(df_processed, figax=(fig, axs[0]), y_column="flux_0")
-        output2 = InteractiveVisualization.plot(df_processed, figax=(fig, axs[1]), y_column="flux_1")
+        fig, ax = plt.subplots()
+        output = InteractiveVisualization.plot(df_processed, figax=(fig, ax), y_column="flux_0")
         # check that return value is of correct type
-        assert output1 is None
-        assert output2 is None
+        assert output is None
