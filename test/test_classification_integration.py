@@ -11,11 +11,14 @@ from wavelength_alignment import WavelengthAlignment
 query="SELECT TOP 10 * FROM SpecObj"
 
 class TestIntegrationClassifier:
-    '''Classify after extracting/modifying data with data_extraction, 
-    preprocessing, and wavelength_alignment'''
+    '''
+    Classify after extracting/modifying data with data_extraction, 
+    preprocessing, and wavelength_alignment
+    
+    Tests: data_extraction --> wavelength_alignment --> preprocessing --> classification
+    '''
 
     def test_predict_preprocessed_aligned_data(self):
-        # data_extraction --> wavelength_alignment --> preprocessing --> classification
         data = Data()
         data.extract_from_query(query)
         data.get_spectra_from_data()
@@ -23,13 +26,14 @@ class TestIntegrationClassifier:
         # align spectra 
         min_val = 1
         max_val = 3
-        object_ids = data.data['objid']
+        object_ids = data.data['specObjID']
         num_points = 5
         _, aligned_spectra = WavelengthAlignment.align(object_ids, min_val, max_val, num_points)
 
         # preprocess data
-        std_spectra = Preprocessing.normalize(data=aligned_spectra)
-        metadata = data.data.drop(columns = ['class', 'objid','fiberid'])
+        std_spectra = Preprocessing.normalize(data=pd.DataFrame(aligned_spectra))
+        # drop IDs and class
+        metadata = data.data.drop(columns = ['class', 'specObjID', 'bestObjID', 'fluxObjID', 'targetObjID', 'plateID'])
         std_metadata = Preprocessing.normalize(data=metadata)
 
         # combine metadata and spectra
