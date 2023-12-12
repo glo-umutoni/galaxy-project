@@ -69,7 +69,7 @@ class TestIntegrationInteractiveVisualization:
         df_processed = Preprocessing.remove_outliers(data=df_processed)
         df_processed = Preprocessing.correct_redshift(data=df_processed, redshift=10)
 
-        # test plotting multiple aligned and preprocessed spectra
+        # test plotting aligned and preprocessed spectra
         fig, ax = plt.subplots()
         output = InteractiveVisualization.plot(df_processed, figax=(fig, ax), y_column="flux_0")
         # check that return value is of correct type
