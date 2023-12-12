@@ -32,7 +32,7 @@ class DataAugmentor:
             raise ValueError("Data to derive cannot be None")
         if not isinstance(data, np.ndarray):
             raise ValueError("Data to derive must be a np.ndarray")
-        if not len(data.shape) != 2 :
+        if len(data.shape) != 2 :
             raise ValueError("Data to derive must be a 2D array")
         if None in derivative_order:
             raise ValueError("Derivative order cannot be None")

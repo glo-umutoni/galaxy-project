@@ -3,7 +3,7 @@ import pytest
 import sys
 import numpy as np
 from differint.differint import GL
-sys.path.append("../app/")
+sys.path.append("app/")
 from data_augmentation import DataAugmentor
 
 class TestDataAugmentor:
@@ -26,7 +26,6 @@ class TestDataAugmentor:
     def test_compute_derivative_return_value(self):
         '''Check that a 2-D array is returned'''
         x = np.random.rand(1, 2)
-        print(x.shape)
         augmented_data = DataAugmentor.compute_derivative(x, [2])
         assert augmented_data.shape[0] == 1
         assert augmented_data.shape[1] == 1
