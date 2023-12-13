@@ -157,9 +157,8 @@ class TestConfusionMatrix:
 
     def test_confusion_matrix_return_values(self):
         '''3x3 matrix returned'''
-        return_values = ["GALAXY", "QSO", "STAR"]
-        y_true = np.random.choice(return_values, 5)
-        y_pred = np.random.choice(return_values, 5)
+        y_true = ["GALAXY", "QSO", "STAR", "QSO", "GALAXY"]
+        y_pred = ["GALAXY", "QSO", "STAR", "STAR", "QSO"]
         classifier = Classifier("LogisticRegression")
         assert classifier.confusion_matrix(y_true, y_pred).shape == (3,3)
     
