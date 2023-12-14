@@ -9,6 +9,7 @@ from data_extraction import Data
 from preprocessing import Preprocessing
 from wavelength_alignment import WavelengthAlignment
 from data_augmentation import DataAugmentor
+from astropy.io import fits
 
 query = "SELECT TOP 10 * FROM SpecObj"
 query_result = SDSS.query_sql(query)
@@ -23,14 +24,14 @@ class TestIntegrationDataAugmentation:
         # extract data from data_extraction
         data = Data()
         data.extract_from_query(query)
-        df= data.data
+        df = data.data
 
         # align wavelengths with wavelength_alignment
-        object_ids= list(df["specObjID"][0:5])
-        min_val= 3.7
-        max_val= 3.8
+        object_ids = list(df["specObjID"][0:5])
+        min_val = 3.7
+        max_val = 3.8
         num_points = 500
-        aligned_x, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
+        _, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
         
         # compute derivative of aligned data
         aligned_deriv = DataAugmentor.compute_derivative(np.array(aligned_y), derivative_order=[1])
@@ -38,17 +39,13 @@ class TestIntegrationDataAugmentation:
         assert aligned_deriv.shape == (1, 5, 500)
 
     def test_data_augmentation_derivative_for_one_unaligned_obj_with_preprocessing(self):
-        '''Compute derivative of unaligned spectra for one star'''
-
+        '''Compute derivative of unaligned spectra for one star'''   
+    
         # extract data from data_extraction
         data = Data()
-
-        # unaligned spectra
-        rec_array = SDSS.get_spectra(matches=query_result)[0][1].data
-        new_array = np.empty(rec_array.shape, dtype=new_dtype)
-        for field in rec_array.dtype.names:
-            new_array[field] = rec_array[field]
-        unaligned_spectra = pd.DataFrame(new_array)     
+        data.extract_from_query(query)
+        spectra = data.get_spectra_from_data()
+        unaligned_spectra = pd.DataFrame(spectra[0][1].data)
 
         # preprocess unaligned spectra
         unaligned_spectra = Preprocessing.correct_redshift(redshift = 10, data = unaligned_spectra)
@@ -73,7 +70,7 @@ class TestIntegrationDataAugmentation:
         min_val= 3.7
         max_val= 3.8
         num_points = 500
-        aligned_x, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
+        _, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
         
         # compute derivative of aligned data
         aligned_deriv = DataAugmentor.compute_derivative(np.array(aligned_y), derivative_order=[0.7])
@@ -85,13 +82,9 @@ class TestIntegrationDataAugmentation:
 
         # extract data from data_extraction
         data = Data()
-
-        # unaligned spectra
-        rec_array = SDSS.get_spectra(matches=query_result)[0][1].data
-        new_array = np.empty(rec_array.shape, dtype=new_dtype)
-        for field in rec_array.dtype.names:
-            new_array[field] = rec_array[field]
-        unaligned_spectra = pd.DataFrame(new_array)     
+        data.extract_from_query(query)
+        spectra = data.get_spectra_from_data()
+        unaligned_spectra = pd.DataFrame(spectra[0][1].data)
 
         # preprocess unaligned spectra
         unaligned_spectra = Preprocessing.correct_redshift(redshift = 10, data = unaligned_spectra)
@@ -108,7 +101,7 @@ class TestIntegrationDataAugmentation:
         max_val = 3.7
         num_points = 500
         object_ids = [299489677444933632]
-        x, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
+        _, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
 
         aug_data = DataAugmentor.compute_derivative(data=np.array(aligned_y), derivative_order=[0.5,0.7])
         assert aug_data.shape == (2, 1, 500)
@@ -119,7 +112,7 @@ class TestIntegrationDataAugmentation:
         max_val = 3.7
         num_points = 500
         object_ids = [299489677444933632, 299489677444933632, 299490502078654464, 299490227200747520]
-        x, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
+        _, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
 
         aug_data = DataAugmentor.compute_derivative(data=np.array(aligned_y), derivative_order=[2,1])
         assert aug_data.shape == (2, 4, 500)
