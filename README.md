@@ -27,15 +27,15 @@ supported.
 
 ## Installation Guide
 
-*Patapoufs in the stars* requires at least Python version 3.9.7, as well as the following packages:
-- numpy
-- pandas
-- matplotlib
-- astroquery
-- astropy
-- sklearn
-- differint
-- scipy
+*Patapoufs in the stars* requires at least Python version 3.10, as well as the following packages:
+- [numpy](https://numpy.org/install/)
+- [pandas](https://pandas.pydata.org/docs/getting_started/install.html)
+- [matplotlib](https://matplotlib.org/stable/users/installing/index.html)
+- [astroquery](https://astroquery.readthedocs.io/en/latest/)
+- [astropy](https://docs.astropy.org/en/stable/install.html)
+- [sklearn](https://scikit-learn.org/stable/install.html)
+- [differint](https://pypi.org/project/differint/)
+- [scipy](https://scipy.org/install/)
 
 ### Install from PyPI
 
