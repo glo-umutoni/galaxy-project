@@ -4,15 +4,15 @@ from astroquery.sdss import SDSS
 import pandas as pd
 
 class Data:
-    '''Retrieves and stores SDSS data within class.'''
+    '''Class that retrieves and stores SDSS data within class.'''
 
     def __init__(self):
+        '''Initialize the Data object.'''
         self.data = pd.DataFrame()
         self.spectrum = []
     
     def extract_from_query(self, query:str):
-        '''
-        Queries from SDSS with user-specified query.
+        '''Queries from SDSS with user-specified query.
         Stores pandas DataFrame in 'data' attribute.
 
         Parameters
@@ -25,8 +25,7 @@ class Data:
         self.data = query_result.to_pandas()
 
     def extract_from_constraints(self, constraints:dict):
-        '''
-        Queries data from SDSS with user-given constraints.  
+        '''Queries data from SDSS with user-given constraints.  
         Stores pandas DataFrame in 'data' attribute.
 
         Parameters
@@ -76,23 +75,27 @@ class Data:
         self.data = query_result.to_pandas()
 
     def extract_from_file(self, path:str):
-        '''Reads and stores data from csv file in 'data' attribute. Assumes header.'''
+        '''Reads and stores data from csv file in 'data' attribute. Assumes header.
+
+        Parameters
+        ----------
+        path : string
+            the path containing the file to read.
+        '''
 
         self.data = pd.read_csv(path, skiprows=1)
 
     @staticmethod
     def get_spectra_from_obj_id(obj_id:str):
-        '''
-        Queries data from SDSS with user-given constraints.  
+        '''Queries data from SDSS with user-given constraints.  
         Stores pandas DataFrame in 'data' attribute.
 
         Parameters
         ----------
-        obj_id = a string corresponding to an object ID
+        obj_id : a string corresponding to an object ID
 
         Returns
         -------
-
         return the spectrum linked to the obj_id
 
         Raises
@@ -100,6 +103,7 @@ class Data:
         ValueError
             Raised if obj_id is not a string
         '''
+        
         if type(obj_id)!=str:
             raise ValueError("obj_id should be a string")
         query = rf"SELECT * FROM SpecObj where specObjID in ({obj_id})"
@@ -107,13 +111,11 @@ class Data:
         return SDSS.get_spectra(matches=query_result)
     
     def get_spectra_from_data(self):
-        '''
-        Queries data from SDSS with user-given constraints.  
+        '''Queries data from SDSS with user-given constraints.  
         Stores pandas DataFrame in 'data' attribute.
 
         Returns
         -------
-
         return the spectrum linked to the Data.data elements ids
 
         Raises
@@ -130,33 +132,35 @@ class Data:
         return self.spectrum
 
     def write_file(self, path:str):
-        '''Writes contents of 'data' attribute to csv file.'''
+        '''Writes contents of 'data' attribute to csv file.
+
+        Parameters
+        ----------
+        path : string
+            the path for the resulting file
+        '''
 
         self.data.to_csv(path, index=False)
 
     def concat(self, new_data, axis:int):
-        '''
-        Concatenates new queried data to the existing data stored in class.
+        '''Concatenates new queried data to the existing data stored in class.
 
         Parameters
         ----------
         new_data : Data class object
             Contains new data in 'data' attribute.
-
         axis : int, either 0 or 1
         '''
 
         self.data = pd.concat([self.data, new_data.data], axis=0)
 
     def merge(self, new_data, on_column:str):
-        '''
-        Performs inner join between existing and new data.
+        '''Performs inner join between existing and new data.
 
         Parameters
         ----------
         new_data : Data class object
             Contains new data in 'data' attribute.
-
         on_column : str
             Column for inner join.
         '''

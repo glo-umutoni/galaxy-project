@@ -52,6 +52,7 @@ class InteractiveVisualization:
         order : int, optional
             order of the polynomial used to fit the spectral data when denoising. Default is 3.
         **kwargs : arguments to be put in the plt.plot function
+        
         Returns
         ------
         span : matplotlib.widgets.SpanSelector object

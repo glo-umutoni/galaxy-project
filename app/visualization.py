@@ -37,10 +37,6 @@ class Visualization:
         fig : matplotlib.figure.Figure
             plot of spectral data
 
-        OR
-
-        None : if ax is passed
-
         Raises
         ------
         TypeError

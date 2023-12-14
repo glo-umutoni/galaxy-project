@@ -5,21 +5,22 @@ from differint.differint import GL
 import numpy as np
 
 class DataAugmentor:
+    '''Class that augments the data by computing both derivatives and fractional derivatives of the data.'''
     @staticmethod
     def compute_derivative(data:np.ndarray, derivative_order=[0.5,1]):
-        ''' Computes derivatives as well as fractional derivatives
+        '''Computes derivatives as well as fractional derivatives
 
          Parameters
          ----------
-         data: list, or 1d-array of  function values
-         derivative_order: list The order of the differintegral to be computed. Default values is [0.5, 1]
+         data : list, or 1d-array of  function values
+         derivative_order : list The order of the differintegral to be computed. Default values is [0.5, 1]
 
          Returns
          --------
-         augment_data: np.array of augmented data of shape (o, s, f) where:
-             o: number of derivatives
-             s: number of unique star object ids
-             f: number of flux points entered
+         augment_data : np.array of augmented data of shape (o, s, f) where:
+             o : number of derivatives
+             s : number of unique star object ids
+             f : number of flux points entered
 
          Raises
          --------
@@ -28,6 +29,7 @@ class DataAugmentor:
              Raised if the derivative order is not a list
 
          '''
+        
         if data is None:
             raise ValueError("Data to derive cannot be None")
         if not isinstance(data, np.ndarray):
