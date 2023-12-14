@@ -30,15 +30,13 @@ class TestIntegrationClassifier:
         num_points = 5
         _, aligned_spectra = WavelengthAlignment.align(object_ids, min_val, max_val, num_points)
 
-        # preprocess data
-        std_spectra = Preprocessing.normalize(data=pd.DataFrame(aligned_spectra))
-        # drop IDs and class
-        metadata = data.data.drop(columns = ['class', 'SpecObjID'])#, 'bestObjID', 'fluxObjID', 'targetObjID', 'plateID'])
-        std_metadata = Preprocessing.normalize(data=metadata)
+        # drop IDs
+        metadata = data.data.drop(columns = ['SpecObjID'])
 
-        # combine metadata and spectra
-        X = pd.concat([std_metadata, std_spectra],axis=1).to_numpy()
-        y = data.data['class'].apply(lambda x : str(x))
+        X, y = Classifier.data_for_classifier(metadata, merge_data=aligned_spectra)
+
+        # normalize data
+        X = Preprocessing.normalize(data=X)
     
         # perform object prediction
         classifier = Classifier('LogisticRegression')

@@ -173,3 +173,63 @@ class Classifier:
             Confusion matrix of shape (n_classes, n_classes). 
         '''
         return confusion_matrix(y_true, y_pred)
+    
+    @staticmethod
+    def data_for_classifier(data, merge_data = None):
+        '''Combine metadata and spectral data.
+
+        Parameters
+        ----------
+        data : pd.DataFrame
+            Pandas dataframe containing features and 'class' column
+            for subsequent classification.  This could be the data contained in the
+            Data.data attribute (ensuring that it is subsetted according
+            to relevant features for classification).  Each row corresponds
+            to one sky object. 
+
+        merge_data : array_like (2d)
+            This could be spectra output from wavelength_alignment module.  
+            Each row corresponds to spectra from one sky object.  
+            Although this is intended for spectra, this 
+            in reality could take any data that could be used as additional features.
+
+        Returns 
+        ----------
+        X : pd.DataFrame (2d)
+            Dataframe that has merged 'data' and 'spectra' along axis 1 
+            (spectra appended as columns) 
+
+        y : array-like (1d)
+            Contains response variable information. 
+
+        Raises
+        ----------
+        ValueError
+            Raised if data is not a pandas DataFrame
+            Raised if data is empty
+            Raised if 'class' column is not found in data
+        '''
+
+        if not isinstance(data, pd.DataFrame): 
+            raise ValueError("data is not a pd.DataFrame")
+        if data.empty: 
+            raise ValueError("data is empty, make sure you extract data first.")
+        if not 'class' in data.columns:
+            raise ValueError("class column is not in data. Check your query")
+
+        # define y
+        y = data['class'].apply(lambda x : str(x.decode()))
+        # drop class from features
+        data = data.drop(columns = ['class'])
+
+        if merge_data:
+            # ensure merge_data is a dataframe
+            merge_data = pd.DataFrame(merge_data)
+            # check that column names are strings
+            if not all(isinstance(col, str) for col in merge_data.columns):
+                merge_data.columns = [str(col) for col in merge_data.columns]
+
+            return pd.concat([data, merge_data],axis=1), y
+        
+        else:
+            return data, y
