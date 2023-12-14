@@ -12,8 +12,7 @@ class Data:
         self.spectrum = []
     
     def extract_from_query(self, query:str):
-        '''
-        Queries from SDSS with user-specified query.
+        '''Queries from SDSS with user-specified query.
         Stores pandas DataFrame in 'data' attribute.
 
         Parameters
@@ -26,8 +25,7 @@ class Data:
         self.data = query_result.to_pandas()
 
     def extract_from_constraints(self, constraints:dict):
-        '''
-        Queries data from SDSS with user-given constraints.  
+        '''Queries data from SDSS with user-given constraints.  
         Stores pandas DataFrame in 'data' attribute.
 
         Parameters
@@ -81,7 +79,7 @@ class Data:
 
         Parameters
         ----------
-        path: string
+        path : string
             the path containing the file to read.
         '''
 
@@ -89,13 +87,12 @@ class Data:
 
     @staticmethod
     def get_spectra_from_obj_id(obj_id:str):
-        '''
-        Queries data from SDSS with user-given constraints.  
+        '''Queries data from SDSS with user-given constraints.  
         Stores pandas DataFrame in 'data' attribute.
 
         Parameters
         ----------
-        obj_id = a string corresponding to an object ID
+        obj_id : a string corresponding to an object ID
 
         Returns
         -------
@@ -113,8 +110,7 @@ class Data:
         return SDSS.get_spectra(matches=query_result)
     
     def get_spectra_from_data(self):
-        '''
-        Queries data from SDSS with user-given constraints.  
+        '''Queries data from SDSS with user-given constraints.  
         Stores pandas DataFrame in 'data' attribute.
 
         Returns
@@ -140,8 +136,7 @@ class Data:
         self.data.to_csv(path, index=False)
 
     def concat(self, new_data, axis:int):
-        '''
-        Concatenates new queried data to the existing data stored in class.
+        '''Concatenates new queried data to the existing data stored in class.
 
         Parameters
         ----------
@@ -153,8 +148,7 @@ class Data:
         self.data = pd.concat([self.data, new_data.data], axis=0)
 
     def merge(self, new_data, on_column:str):
-        '''
-        Performs inner join between existing and new data.
+        '''Performs inner join between existing and new data.
 
         Parameters
         ----------

@@ -13,7 +13,7 @@ class Preprocessing:
 
     @staticmethod
     def normalize(data:pd.DataFrame): 
-        ''' Normalize the values in data.
+        '''Normalize the values in data.
         Returns the normalized values as a pandas DataFrame.
 
         Parameters
@@ -41,7 +41,7 @@ class Preprocessing:
 
     @staticmethod
     def remove_outliers(data:pd.DataFrame):
-        ''' Removes the outliers in data.
+        '''Removes the outliers in data.
         Returns a new DataFrame with the outliers removed.
 
         Parameters
@@ -64,24 +64,24 @@ class Preprocessing:
 
     @staticmethod
     def interpolate(x:list, y:list, x_lim:Tuple[float, float], bins:int):
-        ''' Interpolates wavelengths for a specified object id.
+        '''Interpolates wavelengths for a specified object id.
 
         Parameters
         --------
-        x: list
+        x : list
             A list of log wavelengths
-        y: list
+        y : list
             A list of flux values
-        x_lim: Tuple
+        x_lim : Tuple
             Contains [x_min, x_max] to interpolate between
-        bins: 
+        bins : int
             Number of points to interpolate
 
         Returns
         -------
-        x: list
+        x : list
             linearly spaced log wavelengths
-        y: list
+        y : list
             interpolated flux based on the user selected range and number of points
 
         Raises
@@ -113,15 +113,15 @@ class Preprocessing:
 
     @staticmethod
     def correct_redshift(redshift:float, data:pd.DataFrame):
-        ''' Corrects the redshift in the SDSS spectral data.
+        '''Corrects the redshift in the SDSS spectral data.
         Returns a new DataFrame with a new column "corrected_loglam" \
             containing the redshift corrected values.
 
         Parameters
         --------
-        redshift: float
+        redshift : float
             The redshift value of the object
-        data: pd.DataFrame
+        data : pd.DataFrame
             DataFrame containing spectrum data from SDSS. 
             Needs to contain "loglam" column.
 
