@@ -34,7 +34,7 @@ class InteractiveVisualization:
         return area
     
     @staticmethod
-    def plot(data, y_column:str, order:int=3, figax:Tuple[matplotlib.figure.Figure ,matplotlib.axes.Axes] =None, **kwargs) -> None:
+    def plot(data, y_column:str, order:int=3, figax:Tuple[matplotlib.figure.Figure ,matplotlib.axes.Axes] =None, **kwargs) -> matplotlib.widgets.SpanSelector:
         '''
         Creates interactive plot where user can select region and quantify the flux of spectral line.
         Calls the Visualization class plot() function before adding interactivity.
@@ -55,7 +55,7 @@ class InteractiveVisualization:
         
         Returns
         ------
-        a matplotlib.widgets.SpanSelector object
+        span : matplotlib.widgets.SpanSelector object
 
         Raises
         ------
@@ -126,3 +126,5 @@ class InteractiveVisualization:
         legend.set_loc("upper right")
 
         plt.show()
+
+        return span
