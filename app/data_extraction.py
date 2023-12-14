@@ -4,7 +4,15 @@ from astroquery.sdss import SDSS
 import pandas as pd
 
 class Data:
-    '''Class that retrieves and stores SDSS data within class.'''
+    '''Class that retrieves and stores SDSS data within class.
+    
+    instance attributes : 
+    
+        self.data : pd.DataFrame
+
+        self.spectrum : list
+    
+    '''
 
     def __init__(self):
         '''Initialize the Data object.'''

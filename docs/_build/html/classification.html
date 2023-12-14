@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>classification module &#8212; patapoufs_in_the_stars  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-classification">
+<span id="classification-module"></span><h1>classification module<a class="headerlink" href="#module-classification" title="Link to this heading">¶</a></h1>
+<p>Module used to classify data from Sloan Digital Sky Survey as Star, Galaxy, or QSO.</p>
+<p>This module contains a classifier following the SKlearn API.  This class object can
+be fit with a single preprocessed dataframe containing sky object information where
+each row corresponds to one object, and a list containing their corresponding
+classes (‘STAR’, ‘GALAXY’, or ‘QSO’).  The class of new data can be predicted from
+this as long as the new data follows the same format as the fitted data.
+The quality of predictions can be assessed using the accuracy score returned by the
+<cite>score</cite> method or by a confusion matrix generated from the <cite>confusion_matrix</cite> method.</p>
+<p>Possible input data could include aligned wavelengths, metadata, or a concatenation
+of the two.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="classification.Classifier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Classifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#classification.Classifier" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Classification estimator adapted from sklearn models.</p>
+<p>Supported classifiers include K-Neighbors Classification,
+Logistic Regression, and Random forest classificaton.</p>
+<section id="attribute">
+<h2>Attribute<a class="headerlink" href="#attribute" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>MODELS: dict</dt><dd><p>contains the models the user can use for classification.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<dl>
+<dt>Possible usage of classifier</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Classifier</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;LogisticRegression&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;SELECT TOP 20 SpecObjID, ra, dec, z, run2d, class FROM SpecObj&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">extract_from_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># align spectra</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">object_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;SpecObjID&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span><span class="p">,</span> <span class="n">aligned_spectra</span> <span class="o">=</span> <span class="n">WavelengthAlignment</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">object_ids</span><span class="p">,</span> <span class="n">min_val</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">num_points</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># preprocess data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">std_spectra</span> <span class="o">=</span> <span class="n">Preprocessing</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">aligned_spectra</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># drop class and ID</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">,</span> <span class="s1">&#39;SpecObjID&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">std_metadata</span> <span class="o">=</span> <span class="n">Preprocessing</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># combine metadata and spectra</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">std_metadata</span><span class="p">,</span> <span class="n">std_spectra</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># perform object prediction</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classifier</span> <span class="o">=</span> <span class="n">Classifier</span><span class="p">(</span><span class="s1">&#39;LogisticRegression&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classification.Classifier.MODELS">
+<span class="sig-name descname"><span class="pre">MODELS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'KNeighborsClassifier':</span> <span class="pre">&lt;class</span> <span class="pre">'sklearn.neighbors._classification.KNeighborsClassifier'&gt;,</span> <span class="pre">'LogisticRegression':</span> <span class="pre">&lt;class</span> <span class="pre">'sklearn.linear_model._logistic.LogisticRegression'&gt;,</span> <span class="pre">'RandomForestClassifier':</span> <span class="pre">&lt;class</span> <span class="pre">'sklearn.ensemble._forest.RandomForestClassifier'&gt;}</span></em><a class="headerlink" href="#classification.Classifier.MODELS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.Classifier.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#classification.Classifier.confusion_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Return confusion matrix with predictions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>array_like</em><em> (</em><em>1d</em><em>)</em>) – Array containing the values “GALAXY”, “QSO”, and/or “STAR”.
+True classes of sky objects.</p></li>
+<li><p><strong>y</strong> (<em>array_like</em><em> (</em><em>1d</em><em>)</em>) – Array containing the values “GALAXY”, “QSO”, and/or “STAR”.
+Output from predict method: contains class predictons.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>cm</strong> – Confusion matrix of shape (n_classes, n_classes).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like (2d)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.Classifier.data_for_classifier">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_for_classifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merge_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#classification.Classifier.data_for_classifier" title="Link to this definition">¶</a></dt>
+<dd><p>Combine metadata and spectral data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – Pandas dataframe containing features and ‘class’ column
+for subsequent classification.  This could be the data contained in the
+Data.data attribute (ensuring that it is subsetted according
+to relevant features for classification).  Each row corresponds
+to one sky object.</p></li>
+<li><p><strong>merge_data</strong> (<em>array_like</em><em> (</em><em>2d</em><em>)</em>) – This could be spectra output from wavelength_alignment module.
+Each row corresponds to spectra from one sky object.
+Although this is intended for spectra, this
+in reality could take any data that could be used as additional features.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>X</strong> (<em>pd.DataFrame (2d)</em>) – Dataframe that has merged ‘data’ and ‘spectra’ along axis 1
+(spectra appended as columns)</p></li>
+<li><p><strong>y</strong> (<em>array-like (1d)</em>) – Contains response variable information.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – Raised if data is not a pandas DataFrame
+    Raised if data is empty
+    Raised if ‘class’ column is not found in data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.Classifier.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#classification.Classifier.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Fit classifier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array_like</em><em> (</em><em>2d</em><em>)</em>) – Spectral and/or metadata information for sky objects.
+Should already be preprocessed.  Each row corresponds to one sky object.</p></li>
+<li><p><strong>y</strong> (<em>array_like</em><em> (</em><em>1d</em><em>)</em>) – Array containing the values “GALAXY”, “QSO”, and/or “STAR”,
+the true classes for the sky objects.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.Classifier.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#classification.Classifier.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Predict classes of new data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>array_like</em><em> (</em><em>2d</em><em>)</em>) – Must have the same number of columns as fitted data.
+Used to predict sky object classes.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>y_pred</strong> – Array containing the values “GALAXY”, “QSO”, and/or “STAR”,
+the predicted classes for the sky objects according to
+the fitted classifier.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like (1d)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.Classifier.predict_proba">
+<span class="sig-name descname"><span class="pre">predict_proba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#classification.Classifier.predict_proba" title="Link to this definition">¶</a></dt>
+<dd><p>Predict probabilities for each class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>array_like</em><em> (</em><em>2d</em><em>)</em>) – Must have the same number of columns as fitted data.
+Used to predict probabilities sky object classes.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>y_pred_proba</strong> – Array of shape (x.shape[0], 3) containing the
+predicted probabilities of the sky object belonging
+to each class, as assigned by the classifier.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like (2d)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.Classifier.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#classification.Classifier.score" title="Link to this definition">¶</a></dt>
+<dd><p>Return accuracy score.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array_like</em><em> (</em><em>2d</em><em>)</em>) – Must have the same number of columns as fitted data.</p></li>
+<li><p><strong>y</strong> (<em>array_like</em><em> (</em><em>1d</em><em>)</em>) – Array containing the values “GALAXY”, “QSO”, and/or “STAR”,
+the true classes for the sky objects in x.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>accuracy</strong> – Classification accuracy of fitted classifier predicting
+the classes of the input x data. Value between 0 and 1.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">patapoufs_in_the_stars</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Patapoufs&co.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/classification.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
