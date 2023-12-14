@@ -103,6 +103,7 @@ class Data:
         ValueError
             Raised if obj_id is not a string
         '''
+        
         if type(obj_id)!=str:
             raise ValueError("obj_id should be a string")
         query = rf"SELECT * FROM SpecObj where specObjID in ({obj_id})"
@@ -131,7 +132,13 @@ class Data:
         return self.spectrum
 
     def write_file(self, path:str):
-        '''Writes contents of 'data' attribute to csv file.'''
+        '''Writes contents of 'data' attribute to csv file.
+
+        Parameters
+        ----------
+        path : string
+            the path for the resulting file
+        '''
 
         self.data.to_csv(path, index=False)
 
