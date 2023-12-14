@@ -125,3 +125,5 @@ class InteractiveVisualization:
         legend.set_loc("upper right")
 
         plt.show()
+
+        return span
