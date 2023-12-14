@@ -34,7 +34,7 @@ class InteractiveVisualization:
         return area
     
     @staticmethod
-    def plot(data, y_column:str, order:int=3, figax:Tuple[matplotlib.figure.Figure ,matplotlib.axes.Axes] =None, **kwargs) -> matplotlib.figure.Figure:
+    def plot(data, y_column:str, order:int=3, figax:Tuple[matplotlib.figure.Figure ,matplotlib.axes.Axes] =None, **kwargs) -> None:
         '''
         Creates interactive plot where user can select region and quantify the flux of spectral line.
         Calls the Visualization class plot() function before adding interactivity.
@@ -52,6 +52,7 @@ class InteractiveVisualization:
         order : int, optional
             order of the polynomial used to fit the spectral data when denoising. Default is 3.
         **kwargs : arguments to be put in the plt.plot function
+        
         Returns
         ------
         None
