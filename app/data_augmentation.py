@@ -13,20 +13,19 @@ class DataAugmentor:
 
          Parameters
          ----------
-         data : list, or 1d-array of  function values
-         derivative_order : list The order of the differintegral to be computed. Default values is [0.5, 1]
+         data : pd.DataFrame
+         column : string (name of a column in data)
+         derivative_order : list. The order of the differintegral to be computed. Default values is [0.5, 1]
 
          Returns
          --------
-         augment_data : np.array of augmented data of shape (o, s, f) where:
-             o : number of derivatives
-             s : number of unique star object ids
-             f : number of flux points entered
+         augment_data : pd.DataFrame  (original data df with extra columns "{column}_{alpha}" for alpha inerivative_order )
 
          Raises
          --------
          ValueError
-             Raised if data type is not list or ndarray
+             Raised if data type is not pd.DataFrame
+             Raised if column not in data
              Raised if the derivative order is not a list
 
          '''

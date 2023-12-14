@@ -21,8 +21,7 @@ class WavelengthAlignment:
 
         Returns:
         --------
-        aligned_x: array of linearly spaced log wavelengths
-        aligned: list of arrays of interpolated flux based on the user selected range and number of points (shape object_ids x num_points)
+        pd.Dataframe obect with columns "loglam", "flux_{obj_id}" for all obj ids
 
         Raises
         --------
