@@ -22,7 +22,7 @@ class WavelengthAlignment:
         Returns:
         --------
         aligned_x: array of linearly spaced log wavelengths
-        aligned_y: list of arrays of interpolated flux based on the user selected range and number of points (shape object_ids x num_points)
+        aligned: list of arrays of interpolated flux based on the user selected range and number of points (shape object_ids x num_points)
 
         Raises
         --------
@@ -41,7 +41,7 @@ class WavelengthAlignment:
         if max_val == 0:
             raise ValueError("Range upper bound cannot be empty")
 
-        aligned_y=[]
+        aligned={}
         for object_id in (object_ids):
             object_id_str = str(object_id)
             query = rf"SELECT * FROM SpecObj where specObjID in ({object_id_str})"
@@ -53,6 +53,6 @@ class WavelengthAlignment:
             loglam = np.array(spectra_data['loglam'], dtype=float)
             flux = np.array(spectra_data['flux'], dtype=float)
             x, y = Preprocessing.interpolate(x=loglam, y=flux, x_lim=(min_val, max_val), bins=num_points)
-            aligned_x= x
-            aligned_y.append(y)
-        return aligned_x,aligned_y
+            aligned[f"flux_{object_id_str}"]=y
+        aligned["loglam"]=x
+        return pd.DataFrame(aligned)
