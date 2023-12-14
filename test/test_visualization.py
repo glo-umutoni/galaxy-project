@@ -8,6 +8,7 @@ import shutil
 import pytest
 sys.path.append("app/")
 from visualization import Visualization
+matplotlib.use('Agg')
 
 # sample query and spectra data for testing purposes
 query = "SELECT TOP 10 * FROM SpecObj"
