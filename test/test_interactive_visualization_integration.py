@@ -4,11 +4,13 @@ sys.path.append("app/")
 import numpy as np
 import pandas as pd
 import matplotlib
+import matplotlib.widgets
 import matplotlib.pyplot as plt
 from data_extraction import Data
 from wavelength_alignment import WavelengthAlignment
 from preprocessing import Preprocessing
 from interactive_visualization import InteractiveVisualization
+matplotlib.use('Agg')
 
 query="SELECT TOP 10 * FROM SpecObj"
 
@@ -35,8 +37,8 @@ class TestIntegrationInteractiveVisualization:
         df = pd.DataFrame(spectrum[0][1].data)
         
         output = InteractiveVisualization.plot(df, y_column="flux")
-        # check that return value is of correct type
-        assert output is None
+        # check that function returns a matplotlib.widgets.SpanSelector object
+        assert isinstance(output, matplotlib.widgets.SpanSelector)
     
     def test_plot_aligned(self, monkeypatch):
         '''Test interactive plotting of spectral data after wavelength alignment.'''
@@ -51,8 +53,8 @@ class TestIntegrationInteractiveVisualization:
         # test plotting aligned spectra
         fig, ax = plt.subplots()
         output = InteractiveVisualization.plot(df_aligned, figax=(fig, ax), y_column="flux_0")
-        # check that return value is of correct type
-        assert output is None
+        # check that function returns a matplotlib.widgets.SpanSelector object
+        assert isinstance(output, matplotlib.widgets.SpanSelector)
 
     def test_plot_processed(self, monkeypatch):
         '''Test interactive plotting of spectral data after alignment and preprocessing.'''
@@ -72,5 +74,5 @@ class TestIntegrationInteractiveVisualization:
         # test plotting aligned and preprocessed spectra
         fig, ax = plt.subplots()
         output = InteractiveVisualization.plot(df_processed, figax=(fig, ax), y_column="flux_0")
-        # check that return value is of correct type
-        assert output is None
+        # check that function returns a matplotlib.widgets.SpanSelector object
+        assert isinstance(output, matplotlib.widgets.SpanSelector)
