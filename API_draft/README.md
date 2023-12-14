@@ -19,7 +19,7 @@
 
 ## Module: wavelength_alignment
 - Class WavelengthAlignment
-    - Function align : object_ids:list, min_val:(int,float), max_val:(int,float), num_points:int → array-like, list
+    - Function align : object_ids:list, min_val:(int,float), max_val:(int,float), num_points:int → pd.DataFrame
 
 ## Module: preprocessing 
 - Class Preprocessing
@@ -39,7 +39,7 @@
 
 ## Module: data_augmentation
 - Class DataAugmentor
-    - Function (static) compute_derivative : data:array-like, derivatice_order:list[float] -> 3-D array
+    - Function (static) compute_derivative : Data:pd.DataFrame, column:str, derivative_order=List[float] -> pd.DataFrame
 
 ## Module: classification 
 - Class: Classifier: (based on sklearn classes)
