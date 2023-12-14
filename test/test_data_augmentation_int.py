@@ -30,7 +30,7 @@ class TestIntegrationDataAugmentation:
         min_val= 3.7
         max_val= 3.8
         num_points = 500
-        aligned_x, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
+        _, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
         
         # compute derivative of aligned data
         aligned_deriv = DataAugmentor.compute_derivative(np.array(aligned_y), derivative_order=[1])
@@ -39,9 +39,6 @@ class TestIntegrationDataAugmentation:
 
     def test_data_augmentation_derivative_for_one_unaligned_obj_with_preprocessing(self):
         '''Compute derivative of unaligned spectra for one star'''
-
-        # extract data from data_extraction
-        data = Data()
 
         # unaligned spectra
         rec_array = SDSS.get_spectra(matches=query_result)[0][1].data
@@ -73,7 +70,7 @@ class TestIntegrationDataAugmentation:
         min_val= 3.7
         max_val= 3.8
         num_points = 500
-        aligned_x, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
+        _, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
         
         # compute derivative of aligned data
         aligned_deriv = DataAugmentor.compute_derivative(np.array(aligned_y), derivative_order=[0.7])
@@ -82,9 +79,6 @@ class TestIntegrationDataAugmentation:
 
     def test_data_augmentation_frac_derivative_for_single_unaligned_obj_with_preprocessing(self):
         '''Compute fractional derivative of unaligned spectra for one star'''
-
-        # extract data from data_extraction
-        data = Data()
 
         # unaligned spectra
         rec_array = SDSS.get_spectra(matches=query_result)[0][1].data
@@ -108,7 +102,7 @@ class TestIntegrationDataAugmentation:
         max_val = 3.7
         num_points = 500
         object_ids = [299489677444933632]
-        x, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
+        _, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
 
         aug_data = DataAugmentor.compute_derivative(data=np.array(aligned_y), derivative_order=[0.5,0.7])
         assert aug_data.shape == (2, 1, 500)
@@ -119,7 +113,7 @@ class TestIntegrationDataAugmentation:
         max_val = 3.7
         num_points = 500
         object_ids = [299489677444933632, 299489677444933632, 299490502078654464, 299490227200747520]
-        x, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
+        _, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
 
         aug_data = DataAugmentor.compute_derivative(data=np.array(aligned_y), derivative_order=[2,1])
         assert aug_data.shape == (2, 4, 500)
