@@ -7,25 +7,31 @@ sys.path.append("/app/")
 from preprocessing import Preprocessing
 
 class WavelengthAlignment:
-    '''Retrieves and aligns wavelengths for specified objects
-    Parameters
-    ----------
-    object_ids: a list of object id integers to align
-    min_val: lower range bound of the log wavelength
-    max_val: upper range bound of the log wavelength
-    num_points: number of interpolated points to return
-
-    Returns:
-    --------
-     aligned_x: array of linearly spaced log wavelengths
-     aligned_y: list of arrays of interpolated flux based on the user selected range and number of points (shape object_ids x num_points)
-
-    Raises:
-    -------
-    '''
+    '''Class that aligns the wavelength of the objects.'''
 
     @staticmethod
     def align(object_ids: list, min_val: (int,float), max_val: (int,float), num_points:int):
+        '''Retrieves and aligns wavelengths for specified objects
+        Parameters
+        ----------
+        object_ids: a list of object id integers to align
+        min_val: lower range bound of the log wavelength
+        max_val: upper range bound of the log wavelength
+        num_points: number of interpolated points to return
+
+        Returns:
+        --------
+        aligned_x: array of linearly spaced log wavelengths
+        aligned_y: list of arrays of interpolated flux based on the user selected range and number of points (shape object_ids x num_points)
+
+        Raises
+        --------
+        ValueError
+            Raised if num_points is not an integer
+            Raised if object_ids is not a list
+            Raised if min_val is empty
+            Raised if max_val is empty
+        '''
         if type(num_points) != int:
             raise ValueError("Number of points to interpolate needs to be an integer")
         if type(object_ids) != list:

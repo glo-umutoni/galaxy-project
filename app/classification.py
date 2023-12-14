@@ -25,6 +25,11 @@ class Classifier:
     Supported classifiers include K-Neighbors Classification,
     Logistic Regression, and Random forest classificaton.
 
+    Attribute
+    ----------
+    MODELS: dict
+        contains the models the user can use for classification.
+
     Example
     ----------
     Possible usage of classifier ::

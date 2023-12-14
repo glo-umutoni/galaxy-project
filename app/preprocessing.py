@@ -9,7 +9,7 @@ import numpy as np
 from scipy import stats
 
 class Preprocessing:
-    '''Preprocesses SDSS data.'''
+    '''Class that preprocesses SDSS data.'''
 
     @staticmethod
     def normalize(data:pd.DataFrame): 

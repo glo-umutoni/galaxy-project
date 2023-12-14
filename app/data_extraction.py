@@ -4,9 +4,10 @@ from astroquery.sdss import SDSS
 import pandas as pd
 
 class Data:
-    '''Retrieves and stores SDSS data within class.'''
+    '''Class that retrieves and stores SDSS data within class.'''
 
     def __init__(self):
+        '''Initialize the Data object.'''
         self.data = pd.DataFrame()
         self.spectrum = []
     
@@ -76,7 +77,13 @@ class Data:
         self.data = query_result.to_pandas()
 
     def extract_from_file(self, path:str):
-        '''Reads and stores data from csv file in 'data' attribute. Assumes header.'''
+        '''Reads and stores data from csv file in 'data' attribute. Assumes header.
+
+        Parameters
+        ----------
+        path: string
+            the path containing the file to read.
+        '''
 
         self.data = pd.read_csv(path, skiprows=1)
 
@@ -92,7 +99,6 @@ class Data:
 
         Returns
         -------
-
         return the spectrum linked to the obj_id
 
         Raises
@@ -113,7 +119,6 @@ class Data:
 
         Returns
         -------
-
         return the spectrum linked to the Data.data elements ids
 
         Raises
@@ -142,7 +147,6 @@ class Data:
         ----------
         new_data : Data class object
             Contains new data in 'data' attribute.
-
         axis : int, either 0 or 1
         '''
 
@@ -156,7 +160,6 @@ class Data:
         ----------
         new_data : Data class object
             Contains new data in 'data' attribute.
-
         on_column : str
             Column for inner join.
         '''

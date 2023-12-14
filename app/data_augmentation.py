@@ -5,9 +5,10 @@ from differint.differint import GL
 import numpy as np
 
 class DataAugmentor:
+    '''Class that augments the data by computing both derivatives and fractional derivatives of the data.'''
     @staticmethod
     def compute_derivative(data:np.ndarray, derivative_order=[0.5,1]):
-        ''' Computes derivatives as well as fractional derivatives
+        '''Computes derivatives as well as fractional derivatives
 
          Parameters
          ----------
@@ -28,6 +29,7 @@ class DataAugmentor:
              Raised if the derivative order is not a list
 
          '''
+        
         if data is None:
             raise ValueError("Data to derive cannot be None")
         if not isinstance(data, np.ndarray):
