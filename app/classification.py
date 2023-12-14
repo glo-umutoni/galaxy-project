@@ -32,30 +32,26 @@ class Classifier:
 
     Example
     ----------
-    Possible usage of classifier ::
-        Classifier(model_name='LogisticRegression')
-        query="SELECT TOP 20 SpecObjID, ra, dec, z, run2d, class FROM SpecObj"
-        data = Data()
-        data.extract_from_query(query)
-
-        # align spectra 
-        object_ids = list(data.data['SpecObjID'])
-        _, aligned_spectra = WavelengthAlignment.align(object_ids, min_val=1, max_val=3, num_points=10)
-
-        # preprocess data
-        std_spectra = Preprocessing.normalize(data=pd.DataFrame(aligned_spectra))
-        # drop class and ID
-        metadata = data.data.drop(columns = ['class', 'SpecObjID'])
-        std_metadata = Preprocessing.normalize(data=metadata)
-
-        # combine metadata and spectra
-        X = pd.concat([std_metadata, std_spectra],axis=1).to_numpy()
-        y = data.data['class'].apply(lambda x : str(x))
-    
-        # perform object prediction
-        classifier = Classifier('LogisticRegression')
-        classifier.fit(X,y)
-        y_pred = classifier.predict(X)
+    Possible usage of classifier
+        >>> Classifier(model_name='LogisticRegression')
+        >>> query="SELECT TOP 20 SpecObjID, ra, dec, z, run2d, class FROM SpecObj"
+        >>> data = Data()
+        >>> data.extract_from_query(query)
+        >>> # align spectra 
+        >>> object_ids = list(data.data['SpecObjID'])
+        >>> _, aligned_spectra = WavelengthAlignment.align(object_ids, min_val=1, max_val=3, num_points=10)
+        >>> # preprocess data
+        >>> std_spectra = Preprocessing.normalize(data=pd.DataFrame(aligned_spectra))
+        >>> # drop class and ID
+        >>> metadata = data.data.drop(columns = ['class', 'SpecObjID'])
+        >>> std_metadata = Preprocessing.normalize(data=metadata)
+        >>> # combine metadata and spectra
+        >>> X = pd.concat([std_metadata, std_spectra],axis=1).to_numpy()
+        >>> y = data.data['class'].apply(lambda x : str(x))
+        >>> # perform object prediction
+        >>> classifier = Classifier('LogisticRegression')
+        >>> classifier.fit(X,y)
+        >>> y_pred = classifier.predict(X)
     '''
 
     MODELS = {
