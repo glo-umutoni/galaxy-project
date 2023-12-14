@@ -223,9 +223,12 @@ class Classifier:
         # drop class from features
         data = data.drop(columns = ['class'])
 
-        if merge_data:
+        if merge_data is not None:
+            # in case it comes from waveline_alignment
+            if type(merge_data)==pd.DataFrame and "loglam" in merge_data:
+                merge_data=merge_data.drop(columns = ['loglam'])
             # ensure merge_data is a dataframe
-            merge_data = pd.DataFrame(merge_data)
+            merge_data = pd.DataFrame(merge_data.to_numpy().T)
             # check that column names are strings
             if not all(isinstance(col, str) for col in merge_data.columns):
                 merge_data.columns = [str(col) for col in merge_data.columns]

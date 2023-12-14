@@ -25,15 +25,16 @@ class TestDataAugmentor:
 
     def test_compute_derivative_return_value(self):
         '''Check that a 2-D array is returned'''
-        x = np.random.rand(1, 2)
-        augmented_data = DataAugmentor.compute_derivative(x, [2])
-        assert augmented_data.shape[0] == 1
-        assert augmented_data.shape[1] == 1
-        assert augmented_data.shape[2] == 2
+        x = pd.DataFrame({"flux":np.random.rand(10)})
+        print("flux" not in x)
+        augmented_data = DataAugmentor.compute_derivative(data=x, derivative_order=[2])
+        assert augmented_data.shape[0] == 10
+        assert "flux_2" in augmented_data
+
 
     def test_compute_derivative_correct_values(self):
         '''Check that correct values are returned'''
-        x = np.random.rand(1, 2)
-        augmented_data = DataAugmentor.compute_derivative(x, [2])
-        differint_aug_data = [GL(f_name=x, alpha=2, num_points=2)]
-        assert np.array_equal(augmented_data, differint_aug_data)
+        x = pd.DataFrame({"flux":np.random.rand(10)})
+        augmented_data = DataAugmentor.compute_derivative(data=x, derivative_order=[2])
+        differint_aug_data = GL(f_name=x["flux"].array, alpha=2, num_points=len(x["flux"]))
+        assert np.array_equal(augmented_data["flux_2"], differint_aug_data)

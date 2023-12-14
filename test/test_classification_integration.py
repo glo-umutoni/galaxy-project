@@ -28,7 +28,7 @@ class TestIntegrationClassifier:
         max_val = 3
         object_ids = list(data.data['SpecObjID'])
         num_points = 5
-        _, aligned_spectra = WavelengthAlignment.align(object_ids, min_val, max_val, num_points)
+        aligned_spectra = WavelengthAlignment.align(object_ids, min_val, max_val, num_points)
 
         # drop IDs
         metadata = data.data.drop(columns = ['SpecObjID'])
