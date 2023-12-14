@@ -19,12 +19,8 @@ def perform_alignment(object_ids):
     min_val= 3.7
     max_val= 3.8
     num_points = 5000
-    aligned_x, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
+    df_aligned = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
     
-    df_aligned = pd.DataFrame()
-    df_aligned["loglam"] = aligned_x
-    for i,flux in enumerate(aligned_y):
-        df_aligned[f"flux_{i}"] = aligned_y[i]
     return df_aligned
 
 class TestIntegrationInteractiveVisualization:
@@ -52,7 +48,7 @@ class TestIntegrationInteractiveVisualization:
 
         # test plotting aligned spectra
         fig, ax = plt.subplots()
-        output = InteractiveVisualization.plot(df_aligned, figax=(fig, ax), y_column="flux_0")
+        output = InteractiveVisualization.plot(df_aligned, figax=(fig, ax), y_column=f"flux_{object_ids[0]}")
         # check that function returns a matplotlib.widgets.SpanSelector object
         assert isinstance(output, matplotlib.widgets.SpanSelector)
 
@@ -73,6 +69,6 @@ class TestIntegrationInteractiveVisualization:
 
         # test plotting aligned and preprocessed spectra
         fig, ax = plt.subplots()
-        output = InteractiveVisualization.plot(df_processed, figax=(fig, ax), y_column="flux_0")
+        output = InteractiveVisualization.plot(df_processed, figax=(fig, ax), y_column=f"flux_{object_ids[0]}")
         # check that function returns a matplotlib.widgets.SpanSelector object
         assert isinstance(output, matplotlib.widgets.SpanSelector)

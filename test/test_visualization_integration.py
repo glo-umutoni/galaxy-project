@@ -1,6 +1,6 @@
 '''Test the integration of the visualization module into data pipeline.'''
 import sys
-sys.path.append("../app/")
+sys.path.append("app/")
 import numpy as np
 import pandas as pd
 import matplotlib
@@ -9,6 +9,7 @@ from data_extraction import Data
 from wavelength_alignment import WavelengthAlignment
 from preprocessing import Preprocessing
 from visualization import Visualization
+matplotlib.use('Agg')
 
 query="SELECT TOP 10 * FROM SpecObj"
 
@@ -17,12 +18,8 @@ def perform_alignment(object_ids):
     min_val= 3.7
     max_val= 3.8
     num_points = 5000
-    aligned_x, aligned_y = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
+    df_aligned = WavelengthAlignment.align(object_ids=object_ids, min_val=min_val, max_val=max_val, num_points=num_points)
     
-    df_aligned = pd.DataFrame()
-    df_aligned["loglam"] = aligned_x
-    for i,flux in enumerate(aligned_y):
-        df_aligned[f"flux_{i}"] = aligned_y[i]
     return df_aligned
 
 class TestIntegrationVisualization:
@@ -48,8 +45,8 @@ class TestIntegrationVisualization:
 
         # test plotting multiple aligned spectra
         fig, axs = plt.subplots(ncols=2)
-        fig = Visualization.plot(df_aligned, figax=(fig, axs[0]), y_column="flux_0")
-        fig = Visualization.plot(df_aligned, figax=(fig, axs[1]), y_column="flux_1")
+        fig = Visualization.plot(df_aligned, figax=(fig, axs[0]), y_column=f"flux_{object_ids[0]}")
+        fig = Visualization.plot(df_aligned, figax=(fig, axs[1]), y_column=f"flux_{object_ids[1]}")
         # check that return value is of correct type
         assert isinstance(fig, matplotlib.figure.Figure)
 
@@ -69,7 +66,7 @@ class TestIntegrationVisualization:
 
         # test plotting multiple aligned and preprocessed spectra
         fig, axs = plt.subplots(ncols=2)
-        fig = Visualization.plot(df_processed, figax=(fig, axs[0]), y_column="flux_0")
-        fig = Visualization.plot(df_processed, figax=(fig, axs[1]), y_column="flux_1")
+        fig = Visualization.plot(df_processed, figax=(fig, axs[0]), y_column=f"flux_{object_ids[0]}")
+        fig = Visualization.plot(df_processed, figax=(fig, axs[1]), y_column=f"flux_{object_ids[1]}")
         # check that return value is of correct type
         assert isinstance(fig, matplotlib.figure.Figure)
