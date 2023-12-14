@@ -55,7 +55,7 @@ class InteractiveVisualization:
         
         Returns
         ------
-        None
+        a matplotlib.widgets.SpanSelector object
 
         Raises
         ------
