@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: patapoufsinthestars
-Version: 2.0.0
+Version: 2.1.0
 Summary: CS107/AC207 final project package
 Author-email: Patapoufs&co <alexandra_ramassamy@fas.harvard.edu>
 Project-URL: Homepage, https://code.harvard.edu/CS107/team19_2023
@@ -66,6 +66,7 @@ Requires-Dist: pyerfa==2.0.1.1
 Requires-Dist: Pygments==2.17.2
 Requires-Dist: pyparsing==3.1.1
 Requires-Dist: pytest==7.4.3
+Requires-Dist: pytest-cov
 Requires-Dist: pytest-astropy-header==0.2.2
 Requires-Dist: python-dateutil==2.8.2
 Requires-Dist: pytz==2023.3.post1
@@ -116,13 +117,17 @@ of fractional derivatives, and classification of sky objects into the three clas
 Spectral visualization as well as an interactive visualization are 
 supported. 
 
+## PyPi
+
+You can find the package on TestPyPi [here](https://test.pypi.org/project/patapoufsinthestars/)
+
 ## Installation Guide
 
 ### Requirements:
 
-Requires Python>=3.9
+**Requires Python>=3.9**
 
-*Patapoufs in the stars* requires at least Python version 3.10, as well as the following packages:
+*patapoufsinthestars* requires at least Python version 3.9, as well as the following packages:
 - [numpy](https://numpy.org/install/)
 - [pandas](https://pandas.pydata.org/docs/getting_started/install.html)
 - [matplotlib](https://matplotlib.org/stable/users/installing/index.html)
@@ -134,7 +139,7 @@ Requires Python>=3.9
 
 ### Install from PyPI
 
-`$ pip install patapoufs_in_the_stars`
+`$ python3 -m pip install -i https://test.pypi.org/simple/ --extra-index-url=https://pypi.org/simple patapoufsinthestars`
 
 ## Documentation
 
@@ -143,3 +148,13 @@ Documentation for the package can be found [here](docs/_build/html/index.html).
 ## Demo
 
 A demonstration of package functionalities can be accessed through [this Jupyter notebook](docs/demo.ipynb).
+
+## Testing
+
+To run the test suite from the team19_2023 directory, execute:
+
+`$ python3 -m pytest test/` 
+
+To run the test suite with coverage report, execute:
+
+`$ python3 -m pytest --cov=app/ test/`
