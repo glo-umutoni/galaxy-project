@@ -3,8 +3,8 @@ import sys
 import pandas as pd
 import numpy as np
 from astroquery.sdss import SDSS
-sys.path.append("/app/")
-from preprocessing import Preprocessing
+sys.path.append("app/")
+from patapoufsinthestars.preprocessing import Preprocessing
 
 class WavelengthAlignment:
     '''Class that aligns the wavelength of the objects.'''
