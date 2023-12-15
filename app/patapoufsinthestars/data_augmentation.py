@@ -1,9 +1,8 @@
 '''Module used to compute derivatives as well as fractional derivatives'''
-import sys
-sys.path.append("app/")
+
 import pandas as pd
 from differint.differint import GL
-import numpy as np
+
 
 class DataAugmentor:
     '''Class that augments the data by computing both derivatives and fractional derivatives of the data.'''

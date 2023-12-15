@@ -12,7 +12,6 @@ Possible input data could include aligned wavelengths, metadata, or a concatenat
 of the two. 
 '''
 
-from astroquery.sdss import SDSS
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier

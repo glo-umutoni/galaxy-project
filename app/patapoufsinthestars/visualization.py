@@ -1,6 +1,5 @@
 '''Module used to provide matplotlib-based interface for spectral visualization.'''
 from typing import Tuple
-from astroquery.sdss import SDSS
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib

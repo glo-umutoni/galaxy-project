@@ -1,7 +1,6 @@
 '''Module used to preprocess astronomical data from Sloan Digital Sky Survey.'''
 import pandas as pd
 from typing import Tuple
-from data_extraction import Data
 from sklearn.preprocessing import StandardScaler
 from scipy.interpolate import interp1d
 import pandas as pd

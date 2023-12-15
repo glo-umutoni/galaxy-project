@@ -1,5 +1,4 @@
 '''Module used to extract and/or combine astronomical data from Sloan Digital Sky Survey.'''
-from astropy.table import Table
 from astroquery.sdss import SDSS
 import pandas as pd
 

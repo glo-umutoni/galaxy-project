@@ -1,6 +1,5 @@
 '''Module used to provide interactive matplotlib-based interface. User can select plot regions and quantify total flux.'''
 from typing import Tuple
-from astroquery.sdss import SDSS
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
