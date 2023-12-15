@@ -6,7 +6,7 @@ import matplotlib.figure
 import matplotlib.pyplot as plt
 import shutil
 import pytest
-sys.path.append("app/")
+sys.path.append("app/patapoufsinthestars")
 from visualization import Visualization
 matplotlib.use('Agg')
 

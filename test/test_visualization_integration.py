@@ -1,6 +1,6 @@
 '''Test the integration of the visualization module into data pipeline.'''
 import sys
-sys.path.append("app/")
+sys.path.append("app/patapoufsinthestars")
 import numpy as np
 import pandas as pd
 import matplotlib

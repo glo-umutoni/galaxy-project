@@ -5,7 +5,7 @@ import numpy as np
 from astroquery.sdss import SDSS
 import pytest
 import sys
-sys.path.append("app/")
+sys.path.append("app/patapoufsinthestars")
 from data_extraction import Data
 
 test_dataset_path = "test/data/test_dataset.csv"

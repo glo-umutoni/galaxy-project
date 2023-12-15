@@ -1,4 +1,3 @@
-import os
 import sys
 from astroquery.sdss import SDSS
 import pandas as pd
@@ -6,9 +5,8 @@ import numpy as np
 import matplotlib.figure
 import matplotlib.widgets
 import matplotlib.pyplot as plt
-import shutil
 import pytest
-sys.path.append("app/")
+sys.path.append("app/patapoufsinthestars")
 from interactive_visualization import InteractiveVisualization
 matplotlib.use('Agg')
 

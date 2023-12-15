@@ -3,7 +3,7 @@
 import numpy as np
 import sys
 import pandas as pd
-sys.path.append("app/")
+sys.path.append("app/patapoufsinthestars")
 from data_extraction import Data
 from preprocessing import Preprocessing
 from classification import Classifier

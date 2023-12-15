@@ -1,6 +1,6 @@
 import numpy as np
 import sys
-sys.path.append("../app/")
+sys.path.append("app/patapoufsinthestars")
 from data_extraction import Data
 from wavelength_alignment import WavelengthAlignment
 

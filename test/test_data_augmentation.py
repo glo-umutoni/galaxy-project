@@ -3,7 +3,7 @@ import pytest
 import sys
 import numpy as np
 from differint.differint import GL
-sys.path.append("app/")
+sys.path.append("app/patapoufsinthestars")
 from data_augmentation import DataAugmentor
 
 class TestDataAugmentor:

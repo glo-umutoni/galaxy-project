@@ -2,7 +2,7 @@ import pandas as pd
 import pytest
 import numpy as np
 import sys
-sys.path.append("app/")
+sys.path.append("app/patapoufsinthestars")
 from classification import Classifier
 
 class TestInit:

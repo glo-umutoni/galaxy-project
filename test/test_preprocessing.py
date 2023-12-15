@@ -9,7 +9,7 @@ from scipy import stats
 from sklearn import preprocessing
 from scipy.interpolate import interp1d
 from astropy.cosmology import FlatLambdaCDM
-sys.path.append("app/")
+sys.path.append("app/patapoufsinthestars")
 from data_extraction import Data
 from preprocessing import Preprocessing
 

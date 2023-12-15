@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 import sys
-sys.path.append("../app/")
+sys.path.append("app/patapoufsinthestars")
 from wavelength_alignment import WavelengthAlignment
 
 class TestWavelengthAlignment:
