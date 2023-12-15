@@ -33,9 +33,9 @@ You can find the package on TestPyPi [here](https://test.pypi.org/project/patapo
 
 ### Requirements:
 
-Requires Python>=3.9
+**Requires Python>=3.9**
 
-*Patapoufs in the stars* requires at least Python version 3.10, as well as the following packages:
+*patapoufsinthestars* requires at least Python version 3.9, as well as the following packages:
 - [numpy](https://numpy.org/install/)
 - [pandas](https://pandas.pydata.org/docs/getting_started/install.html)
 - [matplotlib](https://matplotlib.org/stable/users/installing/index.html)
