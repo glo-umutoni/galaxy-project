@@ -1,4 +1,4 @@
-Module documentation is available [here](../docs/_build/html/index.html)
+Module documentation is available [here](../../docs/_build/html/index.html)
 
 # List of modules
 
