@@ -1,13 +1,13 @@
 Metadata-Version: 2.1
 Name: patapoufs-in-the-stars
-Version: 1.4.0
+Version: 1.5.0
 Summary: CS107/AC207 final project package
 Author-email: Patapoufs&co <alexandra_ramassamy@fas.harvard.edu>
 Project-URL: Homepage, https://code.harvard.edu/CS107/team19_2023
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
-Requires-Python: >=3.10
+Requires-Python: >=3.9
 Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: astropy
