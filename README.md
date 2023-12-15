@@ -25,6 +25,10 @@ of fractional derivatives, and classification of sky objects into the three clas
 Spectral visualization as well as an interactive visualization are 
 supported. 
 
+## PyPi
+
+You can find the package on TestPyPi [here](https://test.pypi.org/project/patapoufsinthestars/)
+
 ## Installation Guide
 
 ### Requirements:
@@ -43,7 +47,7 @@ Requires Python>=3.9
 
 ### Install from PyPI
 
-`$ pip install patapoufs_in_the_stars`
+`$ python3 -m pip install -i https://test.pypi.org/simple/ --extra-index-url=https://pypi.org/simple patapoufsinthestars`
 
 ## Documentation
 
@@ -52,3 +56,13 @@ Documentation for the package can be found [here](docs/_build/html/index.html).
 ## Demo
 
 A demonstration of package functionalities can be accessed through [this Jupyter notebook](docs/demo.ipynb).
+
+## Testing
+
+To run the test suite from the team19_2023 directory, execute:
+
+`$ python3 -m pytest test/` 
+
+To run the test suite with coverage report, execute:
+
+`$ python3 -m pytest --cov=app/ test/`
