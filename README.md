@@ -40,3 +40,11 @@ supported.
 ### Install from PyPI
 
 `$ pip install patapoufs_in_the_stars`
+
+## Documentation
+
+Documentation for the package can be found [here](../docs/_build/html/index.html).
+
+## Demo
+
+A demonstration of package functionalities can be accessed through [this Jupyter notebook](docs/demo.ipynb).

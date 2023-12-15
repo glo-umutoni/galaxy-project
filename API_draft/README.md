@@ -1,6 +1,6 @@
-# List of modules
+Module documentation is available [here](../docs/_build/html/index.html)
 
-## Module __init__.py
+# List of modules
 
 ## Module: data_extraction
 
@@ -35,18 +35,19 @@
 ## Module: interactive_visualization
 - Class InteractiveVisualization
     - Function (static) calc_line_area : x:list[float], y:list[float] -> float
-    - Function (static) plot : data:pd.DataFrame, y_column:str, order:int=3, figax:Tuple[matplotlib.figure.Figure,matplotlib.axes.Axes]=None, **kwargs -> None
+    - Function (static) plot : data:pd.DataFrame, y_column:str, order:int=3, figax:Tuple[matplotlib.figure.Figure,matplotlib.axes.Axes]=None, **kwargs -> matplotlib.widgets.SpanSelector
 
 ## Module: data_augmentation
 - Class DataAugmentor
-    - Function (static) compute_derivative : Data:pd.DataFrame, column:str, derivative_order=List[float] -> pd.DataFrame
+    - Function (static) compute_derivative : data:pd.DataFrame, column:str, derivative_order:list[float] -> pd.DataFrame
 
 ## Module: classification 
-- Class: Classifier: (based on sklearn classes)
+- Class: Classifier:
     - Function __init__ : model_name:str, **kwargs -> None
     - Function fit : x_train:array-like, y_train:array-like → None
     - Function predict : x:array-like → pred:array-like
     - Function predict_proba : x:array-like → pred:array-like 
     - Function score : x:array-like, y_true:array-like → score:float
     - Function confusion_matrix : y_true:array-like, y_pred:array-like -> array-like
+    - Function data_for_classifier : data:pd.DataFrame, merge_data:array-like -> pd.DataFrame, array-like
     - Class Attribute: MODEL
