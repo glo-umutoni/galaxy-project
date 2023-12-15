@@ -5,6 +5,7 @@ cryptography
 iniconfig
 ipywidgets
 joblib
+ipympl
 differint
 jupyter_client
 jupyter_core
@@ -12,6 +13,8 @@ jupyterlab-widgets
 matplotlib
 matplotlib-inline
 more-itertools
+ipykernel
+ipywidgets
 numpy
 pandas
 prompt-toolkit

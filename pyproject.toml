@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "patapoufsinthestars"
-version = "1.10.0"
+version = "1.11.0"
 authors = [
   { name="Patapoufs&co", email="alexandra_ramassamy@fas.harvard.edu" },
 ]
@@ -24,6 +24,7 @@ dependencies = [
     "iniconfig",
     "ipywidgets",
     "joblib",
+    "ipympl",
     "differint",
     "jupyter_client",
     "jupyter_core",
@@ -31,6 +32,8 @@ dependencies = [
     "matplotlib",
     "matplotlib-inline",
     "more-itertools",
+    "ipykernel",
+    "ipywidgets",
     "numpy",
     "pandas",
     "prompt-toolkit",
