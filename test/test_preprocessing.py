@@ -1,16 +1,11 @@
-import os
 import pandas as pd
 from astroquery.sdss import SDSS
-import shutil
 import pytest
 import sys
 import numpy as np
 from scipy import stats
-from sklearn import preprocessing
 from scipy.interpolate import interp1d
-from astropy.cosmology import FlatLambdaCDM
 sys.path.append("app/patapoufsinthestars")
-from data_extraction import Data
 from preprocessing import Preprocessing
 
 

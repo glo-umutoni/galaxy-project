@@ -1,7 +1,6 @@
 '''Test the integration of the interactive_visualization module into data pipeline.'''
 import sys
 sys.path.append("app/patapoufsinthestars")
-import numpy as np
 import pandas as pd
 import matplotlib
 import matplotlib.widgets

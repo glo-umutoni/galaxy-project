@@ -1,14 +1,11 @@
 '''Tests for integration of classification module'''
 
-import numpy as np
 import sys
-import pandas as pd
 sys.path.append("app/patapoufsinthestars")
 from data_extraction import Data
 from preprocessing import Preprocessing
 from classification import Classifier
 from wavelength_alignment import WavelengthAlignment
-from sklearn.preprocessing import MultiLabelBinarizer
 query="SELECT TOP 20 SpecObjID, ra,dec,z, run2d, class FROM SpecObj"
 
 class TestIntegrationClassifier:

@@ -1,4 +1,3 @@
-import numpy as np
 import sys
 sys.path.append("app/patapoufsinthestars")
 from data_extraction import Data

@@ -7,9 +7,7 @@ import pandas as pd
 sys.path.append("app/patapoufsinthestars")
 from data_extraction import Data
 from preprocessing import Preprocessing
-from wavelength_alignment import WavelengthAlignment
 from data_augmentation import DataAugmentor
-from astropy.io import fits
 
 query = "SELECT TOP 10 * FROM SpecObj"
 query_result = SDSS.query_sql(query)
