@@ -2,6 +2,14 @@ LICENSE
 README.md
 pyproject.toml
 setup.cfg
+app/patapoufsinthestars/__init__.py
+app/patapoufsinthestars/classification.py
+app/patapoufsinthestars/data_augmentation.py
+app/patapoufsinthestars/data_extraction.py
+app/patapoufsinthestars/interactive_visualization.py
+app/patapoufsinthestars/preprocessing.py
+app/patapoufsinthestars/visualization.py
+app/patapoufsinthestars/wavelength_alignment.py
 app/patapoufsinthestars.egg-info/PKG-INFO
 app/patapoufsinthestars.egg-info/SOURCES.txt
 app/patapoufsinthestars.egg-info/dependency_links.txt
