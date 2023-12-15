@@ -6,7 +6,9 @@ import matplotlib.pyplot as plt
 import matplotlib
 from matplotlib.widgets import SpanSelector
 from scipy.signal import savgol_filter
-from visualization import Visualization
+import sys
+sys.path.append("app/")
+from patapoufsinthestars.visualization import Visualization
 
 class InteractiveVisualization:
     '''Provides interactive visualization functionality given spectra data.'''

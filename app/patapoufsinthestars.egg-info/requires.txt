@@ -5,6 +5,7 @@ cryptography
 iniconfig
 ipywidgets
 joblib
+differint
 jupyter_client
 jupyter_core
 jupyterlab-widgets
