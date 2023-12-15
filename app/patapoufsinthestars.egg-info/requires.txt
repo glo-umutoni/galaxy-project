@@ -13,7 +13,7 @@ jupyterlab-widgets
 matplotlib
 matplotlib-inline
 more-itertools
-ipykernel
+ipykernel==6.25.2
 ipywidgets
 numpy
 pandas

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: patapoufsinthestars
-Version: 1.11.0
+Version: 1.12.0
 Summary: CS107/AC207 final project package
 Author-email: Patapoufs&co <alexandra_ramassamy@fas.harvard.edu>
 Project-URL: Homepage, https://code.harvard.edu/CS107/team19_2023
@@ -25,7 +25,7 @@ Requires-Dist: jupyterlab-widgets
 Requires-Dist: matplotlib
 Requires-Dist: matplotlib-inline
 Requires-Dist: more-itertools
-Requires-Dist: ipykernel
+Requires-Dist: ipykernel==6.25.2
 Requires-Dist: ipywidgets
 Requires-Dist: numpy
 Requires-Dist: pandas

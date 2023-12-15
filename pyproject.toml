@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "patapoufsinthestars"
-version = "1.11.0"
+version = "1.12.0"
 authors = [
   { name="Patapoufs&co", email="alexandra_ramassamy@fas.harvard.edu" },
 ]
@@ -32,7 +32,7 @@ dependencies = [
     "matplotlib",
     "matplotlib-inline",
     "more-itertools",
-    "ipykernel",
+    "ipykernel==6.25.2",
     "ipywidgets",
     "numpy",
     "pandas",

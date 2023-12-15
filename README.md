@@ -27,6 +27,10 @@ supported.
 
 ## Installation Guide
 
+### Requirements:
+
+Requires Python>=3.9
+
 *Patapoufs in the stars* requires at least Python version 3.10, as well as the following packages:
 - [numpy](https://numpy.org/install/)
 - [pandas](https://pandas.pydata.org/docs/getting_started/install.html)
@@ -43,7 +47,7 @@ supported.
 
 ## Documentation
 
-Documentation for the package can be found [here](../docs/_build/html/index.html).
+Documentation for the package can be found [here](docs/_build/html/index.html).
 
 ## Demo
 
