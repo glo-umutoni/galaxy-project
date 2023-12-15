@@ -1,6 +1,43 @@
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "patapoufs_in_the_stars"
+version = "1.2.0"
+authors = [
+  { name="Patapoufs&co", email="alexandra_ramassamy@fas.harvard.edu" },
 ]
-build-backend = "setuptools.build_meta" # use setuptools for building
+description = "CS107/AC207 final project package"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "astropy>=6.0.0",
+    "astropy-iers-data>=0.2023.12.11.0.31.11",
+    "astroquery>=0.4.6",
+    "cryptography>=41.0.7",
+    "iniconfig>=2.0.0",
+    "ipywidgets>=8.1.1",
+    "joblib>=1.3.2",
+    "jupyter_client>=8.6.0",
+    "jupyter_core>=5.5.0",
+    "jupyterlab-widgets>=3.0.9",
+    "matplotlib>=3.8.2",
+    "matplotlib-inline>=0.1.6",
+    "more-itertools>=10.1.0",
+    "numpy>=1.26.2",
+    "pandas>=2.1.4",
+    "prompt-toolkit>=3.0.43",
+    "pyparsing>=3.1.1",
+    "pytest-astropy-header>=0.2.2",
+    "scikit-learn>=1.3.2",
+    "scipy>=1.11.4",
+]
+
+[project.urls]
+"Homepage" = "https://code.harvard.edu/CS107/team19_2023"
