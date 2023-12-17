@@ -66,3 +66,11 @@ To run the test suite from the team19_2023 directory, execute:
 To run the test suite with coverage report, execute:
 
 `$ python3 -m pytest --cov=app/ test/`
+
+## Contributions
+
+Globally, every single piece of work on that package was done in pair programming/collaobration.
+
+Alexandra Ramassamy:
+hours spent :40-50 hours
+work : I worked (both on tests and implementation) on data_extraction, preprocessing, vizualization and wavelength_alignment. I also did integration and documentation works : co-work with Karena and Katherine to generate documentation using sphinx, co-work with Karena to publish the package on pypi tests; work on the demo.ipynb.
