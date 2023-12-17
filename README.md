@@ -72,5 +72,9 @@ To run the test suite with coverage report, execute:
 Globally, every single piece of work on that package was done in pair programming/collaobration.
 
 Alexandra Ramassamy:
-hours spent :40-50 hours
+hours spent : 40-50 hours
 work : I worked (both on tests and implementation) on data_extraction, preprocessing, vizualization and wavelength_alignment. I also did integration and documentation works : co-work with Karena and Katherine to generate documentation using sphinx, co-work with Karena to publish the package on pypi tests; work on the demo.ipynb.
+
+Helen Zhao:
+hours spent : 40-50 hours
+work : I worked on the implementation of the data_extraction module and preprocessing module. I wrote the unit and integration tests for the data_augmentation module. I also helped with writing documentation for the modules. Outside of coding, I also helped the team by reviewing pull requests. Overall, everyone worked well together. We mostly worked together at the same time for this project so I am confident to say that everyone contributed equally. 
