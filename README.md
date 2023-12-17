@@ -86,3 +86,6 @@ work: We performed many of our tasks collaboratively, with contribution from all
 Katherine Hunter:
 hours spent : 40-50 hours
 work : As mentioned, we performed most of the work collaboratively.  I worked on the tests and implementation for the classification module, wrote unit tests for the preprocessing module, and reviewed pull requests.  We worked very well together as a team. 
+
+Gloria Umutoni: 
+hours spent: 40-50 hours - We worked on the project collaboratively often meeting in person or on zoom to advance the work. I worked on the unit test, integration tests, and implementation of the wavelength alignment module, the implementation of data augmentation, as well co-worked on functions of the preprocessing module. Additionally, I supported my team by reviewing pull requests, research and generally serving a sounding board as we ideated through the project. I believe everyone did their fair share  of work which made fo a great team.
