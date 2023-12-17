@@ -69,7 +69,7 @@ To run the test suite with coverage report, execute:
 
 ## Contributions
 
-Globally, every single piece of work on that package was done in pair programming/collaobration.
+Globally, every single piece of work on that package was done in pair programming/collaboration.
 
 Alexandra Ramassamy:
 hours spent : 40-50 hours
@@ -82,3 +82,7 @@ work : I worked on the implementation of the data_extraction module and preproce
 Karena Yan:
 hours spent: 40-50 hours
 work: We performed many of our tasks collaboratively, with contribution from all members. In terms of individual contributions, I was one of the main people working on tests and implementation for the two visualization modules. I played a supporting role in researching and planning out the wavelength alignment module. Additionally, I did work on documentation (revising the schematic and API) and publishing the package on PyPi.
+
+Katherine Hunter:
+hours spent : 40-50 hours
+work : As mentioned, we performed most of the work collaboratively.  I worked on the tests and implementation for the classification module, wrote unit tests for the preprocessing module, and reviewed pull requests.  We worked very well together as a team. 
