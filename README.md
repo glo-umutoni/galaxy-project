@@ -78,3 +78,7 @@ work : I worked (both on tests and implementation) on data_extraction, preproces
 Helen Zhao:
 hours spent : 40-50 hours
 work : I worked on the implementation of the data_extraction module and preprocessing module. I wrote the unit and integration tests for the data_augmentation module. I also helped with writing documentation for the modules. Outside of coding, I also helped the team by reviewing pull requests. Overall, everyone worked well together. We mostly worked together at the same time for this project so I am confident to say that everyone contributed equally. 
+
+Karena Yan:
+hours spent: 40-50 hours
+work: We performed many of our tasks collaboratively, with contribution from all members. In terms of individual contributions, I was one of the main people working on tests and implementation for the two visualization modules. I played a supporting role in researching and planning out the wavelength alignment module. Additionally, I did work on documentation (revising the schematic and API) and publishing the package on PyPi.
